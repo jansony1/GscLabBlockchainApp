@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+function a(){
+$.getJSON(url,function(data) { alert(data);});
+}
+
+function blockchainRestApi(url, parsingFunction) {
+
+var xmlhttp = null;
+if (window.XMLHttpRequest) {
+  xmlhttp = new XMLHttpRequest();
+  if ( typeof xmlhttp.overrideMimeType != 'undefined') { 
+    xmlhttp.overrideMimeType('text/xml'); 
+  }
+} else if (window.ActiveXObject) {
+  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+} else {
+  alert('Perhaps your browser does not support xmlhttprequests?');
+}
+
+
+xmlhttp.onreadystatechange = function() {
+  if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    //document.write(xmlhttp.responseText);
+	//window.alert(xmlhttp.responseText);
+	parsingFunction(xmlhttp.responseText);
+	//return xmlhttp.responseText;
+	//document.write(responseText);
+  } else {
+    // wait for the call to complete
+  }
+};
+//var url = "http://localhost:3000/getAllContracts"
+//var url = "https://maps.googleapis.com/maps/api/geocode/json?address=1500+Amphitheatre+Parkway,+Mountain+View,+CA&key="
+xmlhttp.open('GET', url, true);
+xmlhttp.send(null);
+
+}
+
+function parseSmartContracts(response) {
+    var arr = JSON.parse(response);
+    var i;
+   var out = "<table border='1'><tr><td style='width: 100px; color: black;'>Contract ID</td>";
+    out    += "<td style='width: 100px; color: black; text-align: right;'>Business ID </td>";
+    out    +="<td style='width: 100px; color: black; text-align: right;'>Business Name </td></tr>"
+	var arrLength  = arr.length;
+	
+	//document.write(contract1.ID + " " + contract2.ID);
+	
+	for(i = 0; i < arrLength; i++) {
+		var thisContract = arr[i];
+        out += "<tr><td>" +
+        thisContract.ID +
+        "</td><td>" +
+        thisContract.BusinessId +
+        "</td><td>" +
+        thisContract.BusinessName +
+        "</td></tr>";
+    }
+    out += "</table>";
+    //document.write(out);
+	document.getElementById("smartContractTable").innerHTML = out;
+
+}
+
+function parseTransactions(response) {
+    var arr = JSON.parse(response);
+    var i;
+   var out = "<table border='1'><tr><td style='width: 100px; color: black;'>Date</td>";
+    out    += "<td style='width: 100px; color: black; text-align: right;'>Description </td>";
+    out    +="<td style='width: 100px; color: black; text-align: right;'>Amount </td></tr>"
+	var arrLength  = arr.transactions.length;
+
+	
+	//document.write(contract1.ID + " " + contract2.ID);
+	
+	
+	for(i = 0; i < arrLength; i++) {
+		var thisTxs = arr.transactions[i];
+        out += "<tr><td>" +
+        thisTxs.Date +
+        "</td><td>" +
+        thisTxs.description +
+        "</td><td>" +
+        thisTxs.Amount +
+        "</td></tr>";
+    }
+    out += "</table>";
+    //document.write(out);
+	document.getElementById("transactionsTable").innerHTML = out;
+
+}
+
+
+function parseTransfer(response) {
+	window.alert("Transfer " + response);
+}
+
+function parseUserAccount(response) {
+   var userAccount = JSON.parse(response);
+   var out = "<table border='1'><tr><td style='width: 100px; color: black;'>Name</td>";
+    out    += "<td style='width: 100px; color: black; text-align: right;'>Balance </td>";
+    out    +="<td style='width: 100px; color: black; text-align: right;'>NumberOfTransactions </td></tr>"
+
+    out += "<tr><td>" +
+    userAccount.Name +
+        "</td><td>" +
+     userAccount.Balance +
+        "</td><td>" +
+    userAccount.NumberOfTransactions +
+      "</td></tr>";
+	  
+	  
+    out += "</table>";
+    //document.write(out);
+	document.getElementById("userAccountTable").innerHTML = out;
+
+}
+
+function displaySmartContracts() {
+	var url = "http://localhost:3000/getAllContracts"
+	blockchainRestApi(url, parseSmartContracts);
+
+}
+
+function displayUserTransactions() {
+	var url = "http://localhost:3000/getusertransactions?userid=U2974034"
+	blockchainRestApi(url, parseTransactions);
+}
+
+function transferPoints() {
+
+var e = document.getElementById("fromUser");
+var fromUser = e.options[e.selectedIndex].value;
+e = document.getElementById("toUser");
+var toUser = e.options[e.selectedIndex].value;
+var pointsAmount = document.getElementById("pointsAmountToTransfer").value ;
+var description="Points Transfer";
+
+transferString = "sender=" + fromUser + "&receiver=" + toUser + "&amount=" + pointsAmount + "&description=" + description;
+window.alert(transferString);
+
+var url = "http://localhost:3000/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
+
+
+
+blockchainRestApi(url, parseTransfer);
+
+}
+
+function purchaseTravelPackage() {
+
+var fromUser = "U2974034";  
+var toUser = "T5940872"; 
+var description="Purchased Travel Package"
+
+var pointsAmount = $('input[name="city"]:checked').val();
+
+var e = document.getElementById("travelPackageChoice");
+
+
+transferString = "sender=" + fromUser + "&receiver=" + toUser + "&amount=" + pointsAmount + "&description=" + description;
+window.alert(transferString);
+
+var url = "http://localhost:3000/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
+blockchainRestApi(url, parseTransfer);
+
+}
+
+function displayUserAccount() {
+
+var e = document.getElementById("userAccount");
+var strUser = e.options[e.selectedIndex].value;
+var url = "http://localhost:3000/getCustomerPoints?userid=" + strUser;
+blockchainRestApi(url, parseUserAccount);
+}
+
+
+// A $( document ).ready() block.
+$( document ).ready(function() {
+    console.log( "ready!" );
+	$.get("/openPoints/purchase.html", function(data){
+		$("#nav-placeholder").replaceWith(data);
+});
+	
+});
+
+</script>
+
+
+
+</head>
+<body>
+
+<p> Navigation Bar <p>
+
+<p>Current User Account</p>
+<select id = "userAccount">
+  <option value="U2974034">Natalie</option>
+  <option value="B1928564">OpenFN</option>
+</select>
+<button onclick="displayUserAccount()">Get User Account</button>
+<p id="userAccountTable"> Table Will Appear</p>
+
+<hr>
+
+
+<div id="content-div"> </div>
+
+
+
+
+
+</body>
+</html>
