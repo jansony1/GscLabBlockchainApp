@@ -91,8 +91,18 @@ app.get('/home', function(req, res){
 
 	fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
     if (!err){
-		data = data.replace('#HOSTNAME#', host);
-		data = data.replace('#PORTNUMBER#', port);
+		
+		var hostnameForHtml = "";
+		if (process.env.VCAP_APPLICATION) {
+			var servicesObject = JSON.parse(process.env.VCAP_APPLICATION);
+			hostnameForHtml = servicesObject.application_uris[0];
+		}	
+		else {
+			hostnameForHtml = "localhost:3000";
+		}
+		
+		data = data.replace('#HOSTNAME#', hostnameForHtml);
+		//data = data.replace('#PORTNUMBER#', port);
 		console.log('parsed html file succeeded');
 		res.send(data);
     }else{
@@ -154,6 +164,26 @@ app.get('/transferPoints', function(req, res){
 		
 
 });
+
+
+app.get('/getAppUrl', function(req, res){
+  
+// ---- Load From VCAP aka Bluemix Services ---- //
+if(process.env.VCAP_APPLICATION){																	//load from vcap, search for service, 1 of the 3 should be found...
+	var servicesObject = JSON.parse(process.env.VCAP_APPLICATION);
+
+	res.send(servicesObject.application_uris[0]);  //success response
+		
+}
+
+else {
+	
+	res.send("No app URL found");
+}
+
+});
+
+
 
 
 app.get('/getCustomerPoints', function(req, res){
