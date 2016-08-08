@@ -106,8 +106,13 @@ function parseTransactions(response) {
     var i;
    var out = "<table border='1'><tr><td style='width: 200px; text-align: center; color: black;'>Date</td>";
     out    += "<td style='width: 200px; color: black; text-align: center;'>Description </td>";
+	out    += "<td style='width: 200px; color: black; text-align: center;'>To/From </td>";
     out    +="<td style='width: 200px; color: black; text-align: center;'>Amount </td></tr>"
 	var arrLength  = arr.transactions.length;
+	
+	var e = document.getElementById("userAccount");
+    var currentUserId = e.options[e.selectedIndex].value;
+
 
 	
 	//document.write(contract1.ID + " " + contract2.ID);
@@ -119,16 +124,37 @@ function parseTransactions(response) {
 		
 		var txsDateStr = thisTxs.Date;
 		var res = txsDateStr.split("T");
-		var txsDate = new Date(res[0]);
+		//var txsDate = new Date(res[0]);
+		var txsDate = res[0];
 		var timeStr = res[1].split(":00Z")
 		
         out += "<tr><td>" +
-        txsDate.toDateString() + " " + timeStr[0] +
+        //txsDate.toDateString() + " " + timeStr[0] +
+		txsDate + " " + timeStr[0] +
         "</td><td>" +
-        thisTxs.description +
-        "</td><td style='text-align: center;'>" +
-        thisTxs.Amount +
-        "</td></tr>";
+        thisTxs.description; 
+		
+
+		
+		if (thisTxs.FromUserid == currentUserId) {
+		
+				out += "</td><td>" +
+				thisTxs.ToName; 
+		
+			out += "</td><td style='text-align: center; color: red;'>-" +
+				thisTxs.Amount +
+				"</td></tr>";
+		}
+		
+		else {
+				out += "</td><td>" +
+				thisTxs.FromName; 
+				out += "</td><td style='text-align: center; color: black;'>" +
+				thisTxs.Amount +
+				"</td></tr>";
+		}
+
+
     }
     out += "</table>";
     //document.write(out);
@@ -266,8 +292,8 @@ $( document ).ready(function() {
    document.getElementById("Travel Offers").addEventListener("click", displaySmartContracts);
    document.getElementById("Account Details").addEventListener("click", displayUserAccount);
    
-   var tabcontent = document.getElementById("FeedbackTab");
-   tabcontent.style.display = "none";
+   //var tabcontent = document.getElementById("FeedbackTab");
+   //tabcontent.style.display = "none";
 });
 	
 	
