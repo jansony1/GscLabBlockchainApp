@@ -84,9 +84,26 @@ app.use(function(req, res, next){
 app.use('/', require('./routes/site_router'));
 
 app.get('/home', function(req, res){
-    res.sendfile('home.html', { root: __dirname + "/public/openPoints" } );
+   // res.sendfile('home.html', { root: __dirname + "/public/openPoints" } );
+   
+	var filePath = path.join(__dirname, '/public/openPoints/home.html');
+	var homeFile = fs.readFile(filePath); 
+
+	fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
+    if (!err){
+		data = data.replace('#HOSTNAME#', host);
+		data = data.replace('#PORTNUMBER#', port);
+		console.log('parsed html file succeeded');
+		res.send(data);
+    }else{
+        console.log(err);
+    }
+
+	});
 });
 
+
+console.log("Server name export is: ", setup.SERVER.HOST + ":" +  setup.SERVER.PORT);
 
 app.get('/getAllContracts', function(req, res){
   
@@ -280,22 +297,18 @@ var ibc = new Ibc1();
 // ==================================
 //this hard coded list is intentionaly left here, feel free to use it when initially starting out
 //please create your own network when you are up and running
-//try{
-//	//var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab1.json', 'utf8'));
-//	var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab3.json', 'utf8'));
-//	var peers = manual.credentials.peers;
-//	console.log('loading hardcoded peers');
-//	var users = null;																			//users are only found if security is on
-//	if(manual.credentials.users) users = manual.credentials.users;
-//	console.log('loading hardcoded users');
-//}
-//catch(e){
-//	console.log('Error - could not find hardcoded peers/users, this is okay if running in bluemix');
-//}
-
-var users = null;
-var peers = null;
-
+try{
+	//var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab1.json', 'utf8'));
+	var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab3.json', 'utf8'));
+	var peers = manual.credentials.peers;
+	console.log('loading hardcoded peers');
+	var users = null;																			//users are only found if security is on
+	if(manual.credentials.users) users = manual.credentials.users;
+	console.log('loading hardcoded users');
+}
+catch(e){
+	console.log('Error - could not find hardcoded peers/users, this is okay if running in bluemix');
+}
 
 // ---- Load From VCAP aka Bluemix Services ---- //
 if(process.env.VCAP_SERVICES){																	//load from vcap, search for service, 1 of the 3 should be found...

@@ -9,6 +9,10 @@
 
 <script type="text/javascript">
 
+var hostName = "#HOSTNAME#";
+var portNumber = "#PORTNUMBER#";
+var localUrlStub = "http://" + hostName + ":" + portNumber;
+
 function a(){
 $.getJSON(url,function(data) { alert(data);});
 }
@@ -69,6 +73,7 @@ xmlhttp.send(null);
 }
 
 function parseSmartContracts(response) {
+	//window.alert(response);
     var arr = JSON.parse(response);
     var i,j;
    var out = "<table border='1'><tr><td style='width: 100px; color: black;  text-align: center;'>Deal</td>";
@@ -167,7 +172,8 @@ function parseUserAccount(response) {
 }
 
 function displaySmartContracts() {
-	var url = "http://localhost:3000/getAllContracts"
+	var url = localUrlStub + "/getAllContracts";
+	//window.alert(url);
 	blockchainRestApi(url, parseSmartContracts);
 
 }
@@ -175,7 +181,7 @@ function displaySmartContracts() {
 function displayUserTransactions() {
 	var e = document.getElementById("userAccount");
 	var strUser = e.options[e.selectedIndex].value;
-	var url = "http://localhost:3000/getusertransactions?userid=" + strUser;
+	var url = localUrlStub + "/getusertransactions?userid=" + strUser;
 	blockchainRestApi(url, parseTransactions);
 }
 
@@ -191,7 +197,7 @@ var description="Points Transfer";
 transferString = "sender=" + fromUser + "&receiver=" + toUser + "&amount=" + pointsAmount + "&description=" + description;
 //window.alert(transferString);
 
-var url = "http://localhost:3000/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
+var url = localUrlStub + "/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
 
 
 
@@ -221,7 +227,7 @@ transferString = "sender=" + fromUser + "&receiver=" + toUser + "&amount=" + poi
 transferString += "&contract=" + contract + "&description=" + description;
 //window.alert(transferString);
 
-var url = "http://localhost:3000/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
+var url = localUrlStub + "/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
 blockchainRestApi(url, parseTravelPurchase);
 
 }
@@ -242,7 +248,7 @@ var e = document.getElementById("travelPackageChoice");
 transferString = "sender=" + fromUser + "&receiver=" + toUser + "&amount=" + pointsAmount + "&description=" + description;
 //window.alert(transferString);
 
-var url = "http://localhost:3000/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
+var url = localUrlStub + "/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
 blockchainRestApi(url, parseFeedback);
 
 }
@@ -251,7 +257,7 @@ function displayUserAccount() {
 
 var e = document.getElementById("userAccount");
 var strUser = e.options[e.selectedIndex].value;
-var url = "http://localhost:3000/getCustomerPoints?userid=" + strUser;
+var url = localUrlStub + "/getCustomerPoints?userid=" + strUser;
 
 //window.alert(url);
 blockchainRestApi(url, parseUserAccount);
