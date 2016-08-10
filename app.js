@@ -453,7 +453,7 @@ function check_if_deployed(e, attempt){
 	if(e){
 		cb_deployed(e);																		//looks like an error pass it along
 	}
-	else if(attempt >= 15){																	//tried many times, lets give up and pass an err msg
+	else if(attempt >= 30){																	//tried many times, lets give up and pass an err msg
 		console.log('[preflight check]', attempt, ': failed too many times, giving up');
 		var msg = 'chaincode is taking an unusually long time to start. this sounds like a network error, check peer logs';
 		if(!process.error) process.error = {type: 'deploy', msg: msg};
