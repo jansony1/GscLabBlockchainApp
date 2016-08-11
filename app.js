@@ -327,12 +327,16 @@ var ibc = new Ibc1();
 // ==================================
 //this hard coded list is intentionaly left here, feel free to use it when initially starting out
 //please create your own network when you are up and running
+
+var peers = null;
+var users = null;
+var chaincode = null;	
 try{
 	//var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab1.json', 'utf8'));
 	var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab3.json', 'utf8'));
-	var peers = manual.credentials.peers;
+	peers = manual.credentials.peers;
 	console.log('loading hardcoded peers');
-	var users = null;																			//users are only found if security is on
+	users = null;																			//users are only found if security is on
 	if(manual.credentials.users) users = manual.credentials.users;
 	console.log('loading hardcoded users');
 }
@@ -365,8 +369,9 @@ if(process.env.VCAP_SERVICES){																	//load from vcap, search for serv
 	}
 }
 
-
-// ==================================
+if (peers != null) {
+	
+	// ==================================
 // configure options for ibm-blockchain-js sdk
 // ==================================
 var options = 	{
@@ -424,7 +429,7 @@ if(process.env.VCAP_SERVICES){
 }
 
 // ---- Fire off SDK ---- //
-var chaincode = null;																		//sdk will populate this var in time, lets give it high scope by creating it here
+																	//sdk will populate this var in time, lets give it high scope by creating it here
 ibc.load(options, function (err, cc){														//parse/load chaincode, response has chaincode functions!
 	if(err != null){
 		console.log('! looks like an error loading the chaincode or network, app will fail\n', err);
@@ -447,6 +452,10 @@ ibc.load(options, function (err, cc){														//parse/load chaincode, respo
 		}
 	}
 });
+	
+	
+}
+
 
 //loop here, check if chaincode is up and running or not
 function check_if_deployed(e, attempt){
