@@ -6,6 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="/openPoints/tabs.css">
+<link rel="stylesheet" type="text/css" href="/openPoints/styles.css">
 
 <script type="text/javascript">
 
@@ -43,8 +44,8 @@ function blockchainRestApi(url, parsingFunction) {
 var xmlhttp = null;
 if (window.XMLHttpRequest) {
   xmlhttp = new XMLHttpRequest();
-  if ( typeof xmlhttp.overrideMimeType != 'undefined') { 
-    xmlhttp.overrideMimeType('text/xml'); 
+  if ( typeof xmlhttp.overrideMimeType != 'undefined') {
+    xmlhttp.overrideMimeType('text/xml');
   }
 } else if (window.ActiveXObject) {
   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
@@ -75,22 +76,22 @@ function parseSmartContracts(response) {
 	//window.alert(response);
     var arr = JSON.parse(response);
     var i,j;
-   var out = "<table border='1'><tr><td style='width: 100px; color: black;  text-align: center;'>Deal</td>";
-    out    += "<td style='width: 100px; color: black; text-align: center;'>Terms</td></tr>";
+   var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Offer</td>";
+    out    += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Terms</td></tr>";
 	var arrLength  = arr.length;
-	
+
 	//document.write(contract1.ID + " " + contract2.ID);
-	
+
 	for(i = 0; i < arrLength; i++) {
 		var thisContract = arr[i];
-        out += "<tr><td>" + thisContract.Title + "</td><td>"; 
-		
+        out += "<tr><td style='padding-left:10px;'>" + thisContract.Title + "</td><td>";
+
 		var numConditions = thisContract.Conditions.length;
 		out += "<ul>";
 		for(j = 0; j < numConditions; j++) {
 			out += "<li>" + thisContract.Conditions[j] + "</li>";
 		}
-		
+
 		out +=  "</ul></td></tr>";
     }
     out += "</table>";
@@ -104,51 +105,51 @@ function parseSmartContracts(response) {
 function parseTransactions(response) {
     var arr = JSON.parse(response);
     var i;
-   var out = "<table border='1'><tr><td style='width: 200px; text-align: center; color: black;'>Date</td>";
-    out    += "<td style='width: 200px; color: black; text-align: center;'>Description </td>";
-	out    += "<td style='width: 200px; color: black; text-align: center;'>To/From </td>";
-    out    +="<td style='width: 200px; color: black; text-align: center;'>Amount </td></tr>"
+   var out = "<table border='1'><tr><td style='width: 200px; text-align: center; color: black;padding:7px; color:#000; background-color:#f1f1f1;'>Date</td>";
+    out    += "<td style='width: 200px; color: black; text-align: center;padding:7px; color:#000; background-color:#f1f1f1;'>Description </td>";
+	out    += "<td style='width: 200px; color: black; text-align: center;padding:7px; color:#000; background-color:#f1f1f1;'>To/From </td>";
+    out    +="<td style='width: 200px; color: black; text-align: center;padding:7px; color:#000; background-color:#f1f1f1;'>Amount </td></tr>"
 	var arrLength  = arr.transactions.length;
-	
+
 	var e = document.getElementById("userAccount");
     var currentUserId = e.options[e.selectedIndex].value;
 
 
-	
+
 	//document.write(contract1.ID + " " + contract2.ID);
-	
-	
+
+
 	for(i = 0; i < arrLength; i++) {
-	
+
 		var thisTxs = arr.transactions[i];
-		
+
 		var txsDateStr = thisTxs.Date;
 		var res = txsDateStr.split("T");
 		//var txsDate = new Date(res[0]);
 		var txsDate = res[0];
 		var timeStr = res[1].split(":00Z")
-		
+
         out += "<tr><td>" +
         //txsDate.toDateString() + " " + timeStr[0] +
 		txsDate + " " + timeStr[0] +
         "</td><td>" +
-        thisTxs.description; 
-		
+        thisTxs.description;
 
-		
+
+
 		if (thisTxs.FromUserid == currentUserId) {
-		
+
 				out += "</td><td>" +
-				thisTxs.ToName; 
-		
+				thisTxs.ToName;
+
 			out += "</td><td style='text-align: center; color: red;'>-" +
 				thisTxs.Amount +
 				"</td></tr>";
 		}
-		
+
 		else {
 				out += "</td><td>" +
-				thisTxs.FromName; 
+				thisTxs.FromName;
 				out += "</td><td style='text-align: center; color: black;'>" +
 				thisTxs.Amount +
 				"</td></tr>";
@@ -175,21 +176,27 @@ function parseFeedback(response) {
 	document.getElementById("Provide Feedback").innerHTML = "Feedback submitted!";
 }
 
+function parseContract(response) {
+
+	document.getElementById("Create Travel Offers").innerHTML = "Travel Offer Created!";
+}
+
+
 function parseUserAccount(response) {
    var userAccount = JSON.parse(response);
-   var out = "<table border='1'><tr><td style='width: 100px; text-align: center; color: black;'>Name</td>";
-    out    += "<td style='width: 100px; color: black; text-align: center;'>Balance </td>";
-    out    +="<td style='width: 200px; color: black; text-align: center;'>Number Of Transactions </td></tr>"
+   var out = "<table border='1'><tr><td style='width: 100px; text-align: center; color: black; background-color:#f1f1f1;'>Name</td>";
+    out    += "<td style='width: 100px; color: black; text-align: center; background-color:#f1f1f1;'>Balance </td>";
+    out    +="<td style='width: 200px; color: black; text-align: center; background-color:#f1f1f1;'>Number Of Transactions </td></tr>"
 
-    out += "<tr><td>" +
+    out += "<tr><td style='text-align:center;'>" +
     userAccount.Name +
         "</td><td style='text-align: center;'>" +
      userAccount.Balance +
         "</td><td style='text-align: center;'>" +
     userAccount.NumberOfTransactions +
       "</td></tr>";
-	  
-	  
+
+
     out += "</table>";
     //document.write(out);
 	document.getElementById("userAccountTable").innerHTML = out;
@@ -233,26 +240,29 @@ blockchainRestApi(url, parseTransfer);
 function purchaseTravelPackage() {
 
 var e = document.getElementById("userAccount");
-var fromUser = e.options[e.selectedIndex].value; 
-var toUser = "T5940872"; 
+var fromUser = e.options[e.selectedIndex].value;
+var toUser = "T5940872";
 var description="Purchased Travel Package"
 
-var pointsAmount = $('input[name="city"]:checked').val();
+var travelPackage = $('input[name="city"]:checked').val();
+var arraySplit = travelPackage.split(':');
+var cityName = arraySplit[0];
+var pointsAmount = arraySplit[1];
+var description="Purchased Travel Package to " + cityName;
 
-var contract = "";
-if (pointsAmount == 5000) {
-	contract = "C289416";
-}
-	
+var contract = cityName;
+
 
 var e = document.getElementById("travelPackageChoice");
 
 
-transferString = "sender=" + fromUser + "&receiver=" + toUser + "&amount=" + pointsAmount; 
+transferString = "sender=" + fromUser + "&receiver=" + toUser + "&amount=" + pointsAmount;
 transferString += "&contract=" + contract + "&description=" + description;
 //window.alert(transferString);
 
 var url = localUrlStub + "/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
+
+window.alert(url);
 blockchainRestApi(url, parseTravelPurchase);
 
 }
@@ -261,8 +271,8 @@ blockchainRestApi(url, parseTravelPurchase);
 function submitFeedback() {
 
 var e = document.getElementById("userAccount");
-var toUser = e.options[e.selectedIndex].value; 
-var fromUser = "T5940872";  
+var toUser = e.options[e.selectedIndex].value;
+var fromUser = "T5940872";
 var description="Points For Feedback"
 
 var pointsAmount = 1000;
@@ -291,12 +301,61 @@ blockchainRestApi(url, parseUserAccount);
 $( document ).ready(function() {
    document.getElementById("Travel Offers").addEventListener("click", displaySmartContracts);
    document.getElementById("Account Details").addEventListener("click", displayUserAccount);
+
+   //var tabcontent = document.getElementById("FeedbackTab");
+   //tabcontent.style.display = "none";
+});
+
+
+function changeUserAccount(){
+
+	var e = document.getElementById("userAccount");
+	var currentIndex = e.selectedIndex;
+    var currentUserId = e.options[e.selectedIndex].value;
+	//location.reload();
+	e = document.getElementById("userAccount");
+
+	var contractTab = document.getElementById("SmartContractTab");
+	if (currentUserId == "T5940872") {
+		contractTab.style.display = "block";
+	}
+	else {
+		contractTab.style.display = "none";
+	}
+
+}
+
+
+function addSmartContract(){
+
+var e = document.getElementById("SmartContractCity");
+var contractId = e.options[e.selectedIndex].value;	
+var title = document.getElementById("contractTitle").value ;
+var term1 = document.getElementById("term1").value;
+var term2 = document.getElementById("term2").value;
+var discountRate = document.getElementById("discountRate").value ;
+discountRate = discountRate / 100.0;
+
+
+var contractTerms = "contractid=" + contractId + "&title=" + title + "&condition1=" + term1+ "&condition2=" + term2 + "&discountrate=" + discountRate;
+
+var url = localUrlStub + "/addSmartContract?" + contractTerms;
+
+blockchainRestApi(url, parseContract);
+
+
+}
+
+$( document ).ready(function() {
+
+
+   document.getElementById("Travel Offers").addEventListener("click", displaySmartContracts);
+   document.getElementById("Account Details").addEventListener("click", displayUserAccount);
+
    
    //var tabcontent = document.getElementById("FeedbackTab");
    //tabcontent.style.display = "none";
 });
-	
-	
 
 </script>
 
@@ -304,79 +363,98 @@ $( document ).ready(function() {
 
 </head>
 <body>
-<h1>Open Points</h1>
+<div class="content">
+  <div class="top-header">
+    <div class="col50 main-font">
+      Open Points
+    </div>
+    <div class="col50 user">
+      Current User:
+      <select id = "userAccount"  onchange="changeUserAccount()">
+        <option value="U2974034">Natalie</option>
+        <option value="U3151672">Anthony</option>
+        <option value="B1928564">OpenFN</option>
+        <option value="T5940872">Open Travel</option>
+      </select>
 
-Current User: 
-<select id = "userAccount">
-  <option value="U2974034">Natalie</option>
-  <option value="U3151672">Anthony</option>
-  <option value="B1928564">OpenFN</option>
-  <option value="T5940872">Open Travel</option>
-</select>
+    </div>
+  </div>
 
-<hr>
+
+
 <ul class="tab">
   <li><a href="#" class="tablinks" onclick="openTab(event, 'Travel Offers')">Travel Offers</a></li>
   <li><a href="#" class="tablinks" onclick="openTab(event, 'Account Details')">Account Details</a></li>
   <li><a href="#" class="tablinks" onclick="openTab(event, 'Transfer Points')">Transfer Points</a></li>
   <li id="FeedbackTab"><a href="#" class="tablinks" onclick="openTab(event, 'Provide Feedback')">Provide Feedback</a></li>
-</ul>
+  <li id="SmartContractTab" style='display: none'  ><a href="#" class="tablinks" onclick="openTab(event, 'Create Travel Offers')">Create Travel Offers</a></li>
+  </ul>
 
 <div id="Travel Offers" class="tabcontent">
   <h3>Travel Offers</h3>
-  
-    <p id="smartContractTable"> </p>
-  
   <hr>
-  
-   <h3>Purchase Travel Package</h3>
+
+    <p id="smartContractTable"> </p>
+
+
+
+   <h3 class="purchase-header">Purchase Travel Package</h3>
+     <hr>
   <p></p>
 	<form id="travelPackageChoice">
-		<input type="radio" name="city" value="5000" checked> Paris: 5k Points <br>
-		<input type="radio" name="city" value="6000" > New York City: 6k Points<br>
-		<input type="radio" name="city" value="7000"> London: 7k Points
+		<input type="radio" name="city" value="Paris:10000" checked> Paris: 10k Points <br>
+		<input type="radio" name="city" value="New York City:15000" > New York City: 15k Points<br>
+		<input type="radio" name="city" value="London:20000"> London: 20k Points <br>
+		<input type="radio" name="city" value="Tokyo:30000"> Tokyo: 25k Points <br>
+		<input type="radio" name="city" value="Rio de Janeiro:40000"> Rio de Janeiro: 30k Points <br>
+		
 	</form>
 	<p></p>
-	<button onclick="purchaseTravelPackage()">Purchase Travel Package</button>
+	<button onclick="purchaseTravelPackage()" class="purchase-btn">Purchase Travel Package</button>
 </div>
 
 <div id="Account Details" class="tabcontent">
   <h3>Account Details</h3>
+  <hr>
 
 	<p id="userAccountTable"> </p>
-	
-	<hr>
-	
-	<button onclick="displayUserTransactions()">Get Transaction History</button>
+
+
+
+	<button onclick="displayUserTransactions()" class="transaction-btn">Get Transaction History</button>
 	<p id="transactionsTable"></p>
-	
+
 </div>
 
 <div id="Transfer Points" class="tabcontent">
   <h3>Transfer Points</h3>
 
-	To: 
+  <hr>
+  <br>
+
+	To:
 		<select id = "toUser">
 			<option value="U2974034">Natalie</option>
 			<option value="U3151672">Anthony</option>
 			<option value="B1928564">OpenFN</option>
 			<option value="T5940872">Open Travel</option>
 		</select>
-		
+
 		<p> </p>
 		<form action="demo_form.asp">
-			Amount: <input type="text" id="pointsAmountToTransfer"><br>
+			Amount: <input type="text" id="pointsAmountToTransfer" class="amount"><br>
 		</form>
 		<p></p>
-		
-		<button onclick="transferPoints()">Transfer Points</button>
+
+		<button onclick="transferPoints()" class="transaction-btn">Transfer Points</button>
 </div>
 
 
 <div id="Provide Feedback" class="tabcontent">
   <h3>Rate Your Travel Experience</h3>
-  
-		Buying Process: 
+  <hr>
+
+		Buying Process:
 		<select id = "process">
 			<option value="great">Great</option>
 			<option value="good">Good</option>
@@ -385,8 +463,8 @@ Current User:
 			<option value="terrible">Terrible</option>
 		</select>
 		<br><br>
-		
-		Food: 
+
+		Food:
 		<select id = "food">
 			<option value="great">Great</option>
 			<option value="good">Good</option>
@@ -395,7 +473,7 @@ Current User:
 			<option value="terrible">Terrible</option>
 		</select>
 		<br><br>
-		Transportation: 
+		Transportation:
 		<select id = "transportation">
 			<option value="great">Great</option>
 			<option value="good">Good</option>
@@ -404,8 +482,8 @@ Current User:
 			<option value="terrible">Terrible</option>
 		</select>
 		<br><br>
-		
-		Customer Service: 
+
+		Customer Service:
 		<select id = "service">
 			<option value="great">Great</option>
 			<option value="good">Good</option>
@@ -414,10 +492,42 @@ Current User:
 			<option value="terrible">Terrible</option>
 		</select>
 		<br>
-		
+
 		<br>
-	<button onclick="submitFeedback()">Submit User Feedback</button>
+	<button onclick="submitFeedback()" class="purchase-btn">Submit User Feedback</button>
 </div>
 
+<div id="Create Travel Offers" class="tabcontent">
+  <h3>Create Travel Offer</h3>
+
+  <hr>
+  <br>
+	
+	Package: 
+        <select id = "SmartContractCity">
+        <option value="Paris"> Paris: 10k Points</option>
+        <option value="New York City">New York City: 15k Points</option>
+        <option value="London">London: 20k Points</option>
+        <option value="Tokyo">Tokyo: 25k Points</option>
+		<option value="Rio de Janeiro">Rio de Janeiro: 30k Points</option>	
+      </select>
+	<p> </p>
+
+		<form action="demo_form.asp">
+			Title: <input type="text" id="contractTitle" class="amount"><br>
+			<p> </p>
+			Term 1: <input type="text" id="term1" class="amount"><br>
+			<p> </p>
+			Term 2: <input type="text" id="term2" class="amount"><br>
+			<p> </p>
+			Point Discount (%): <input type="text" id="discountRate" class="amount"><br>
+		</form>
+		<p></p>
+
+		<button onclick="addSmartContract()" class="transaction-btn">Create Offer</button>
+</div>
+
+
+</div>
 </body>
 </html>

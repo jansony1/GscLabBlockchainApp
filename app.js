@@ -31,6 +31,11 @@ var cors = require('cors');
 var host = setup.SERVER.HOST;
 var port = setup.SERVER.PORT;
 
+// Set chaincode variables
+var peers = null;
+var users = null;
+var chaincode = null;	
+
 ////////  Pathing and Module Setup  ////////
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -80,12 +85,10 @@ app.use(function(req, res, next){
 	next();
 });
 
-//// Router ////
-app.use('/', require('./routes/site_router'));
 
-app.get('/home', function(req, res){
-   // res.sendfile('home.html', { root: __dirname + "/public/openPoints" } );
-   
+// Set the landing page for the desktop app by sending an html file as a response
+app.get('/', function(req, res){
+
 	var filePath = path.join(__dirname, '/public/openPoints/home.html');
 	var homeFile = fs.readFile(filePath); 
 
@@ -102,7 +105,6 @@ app.get('/home', function(req, res){
 		}
 		
 		data = data.replace('#HOSTNAME#', hostnameForHtml);
-		//data = data.replace('#PORTNUMBER#', port);
 		console.log('parsed html file succeeded');
 		res.send(data);
     }else{
@@ -113,32 +115,107 @@ app.get('/home', function(req, res){
 });
 
 
-console.log("Server name export is: ", setup.SERVER.HOST + ":" +  setup.SERVER.PORT);
 
+// Get all smart contracts from the blockchain
 app.get('/getAllContracts', function(req, res){
   
 
-
-	
-	//console.log('Calling getAllContracts from blockchain ');
-
-	//chaincode.query(['getNVAccounts', "BANKA"], cb_got_nv_accounts_api);
-	
-	//chaincode.query(['getAllContracts', 'dummy_argument'], function(e,data){
-		//cb_got_nv_accounts_api(e,data,res);
-	//});
-
 	chaincode.query.getAllContracts(['getAllContracts', 'dummy_argument'], function(e,data){
-		cb_got_nv_accounts_api(e,data,res);
+		cb_received_response(e,data,res);
 	});
 	
-	
-	//chaincode.query.read(['_marbleindex'], cb_got_index);
-	//res.send("success");  //success response
-		
 
 });
 
+
+
+app.get('/deployPartC', function(req, res) {
+	var ibc2 = new Ibc1();
+	var options = 	{
+					network:{
+						peers: [peers[0]],																	//lets only use the first peer! since we really don't need any more than 1
+						users: users,																		//dump the whole thing, sdk will parse for a good one
+						options: {
+									quiet: true, 															//detailed debug messages on/off true/false
+									tls: true, 																//should app to peer communication use tls?
+									maxRetry: 1																//how many times should we retry register before giving up
+								}
+					},
+					chaincode:{
+						//zip_url: 'https://github.com/ibm-blockchain/marbles-chaincode/archive/master.zip',
+						//unzip_dir: 'marbles-chaincode-master/hyperledger/part2',							//subdirectroy name of chaincode after unzipped
+						//git_url: 'https://github.com/ibm-blockchain/marbles-chaincode/hyperledger/part2',	//GO get http url
+			
+			
+						//zip_url: 'https://github.com/apiBlockchain/CtaBlockchainLab/archive/master.zip',
+						//unzip_dir: 'CtaBlockchainLab-master',									//subdirectroy name of chaincode after unzipped
+						//git_url: 'https://github.com/apiBlockchain/CtaBlockchainLab',			//GO git http url
+						
+						
+						zip_url: 'https://github.com/apiBlockchain/CtaLabChaincode/archive/master.zip',
+						unzip_dir: 'CtaLabChaincode-master',									//subdirectroy name of chaincode after unzipped
+						git_url: 'https://github.com/apiBlockchain/CtaLabChaincode',			//GO git http url
+
+						//zip_url: 'https://github.com/apiBlockchain/apiBlockchainRebuild/archive/master.zip',
+						//unzip_dir: 'apiBlockchainRebuild-master',									//subdirectroy name of chaincode after unzipped
+						//git_url: 'https://github.com/apiBlockchain/apiBlockchainRebuild',			//GO git http url
+			
+						//zip_url: 'https://github.com/apiBlockchain/nv-chaincode/archive/master.zip',
+						//unzip_dir: 'nv-chaincode-master',									//subdirectroy name of chaincode after unzipped
+						//git_url: 'https://github.com/apiBlockchain/nv-chaincode',			//GO git http url
+					
+					
+						//hashed cc name from prev deployment, comment me out to always deploy, uncomment me when its already deployed to skip deploying again
+						//deployed_name: '8c5677016abb7b4885b8dc40bb5b28f1554888cd766e2c945bc61bca03b349092f19197d32785254c692c9210db34c31821efc89e8a9f4dcb3f5575bebb4584b'
+						//deployed_name: '8c5677016abb7b4885b8dc40bb5b28f1554888cd766e2c945bc61bca03b349092f19197d32785254c692c9210db34c31821efc89e8a9f4dcb3f5575bebb4584b'
+						
+						// Standard marbles BC
+						//deployed_name: '50d9a2b4f93eb520b48f750b174dd90a8c4e5bf9836ee37e56d67fccccabe303ac95d3d299185215fbe90eef70a668363a3c7edd500e83f333c2af06dc0b1557'
+					
+					   // Lab BC - CtaBlockchainLab1
+					   //deployed_name: '1342acdbcc60936f7f5ec84baee7a38e9b378011be88e96067b69d31b29ff39fdb4c8781ded06be581ab480d5db67995bfd0d681fcff836e4e7f74a1dd4f22ae'
+					  //   deployed_name: 'b83303cd4dcd2e4a465839440758d2a3ef87e84a5f1f6bf7d2812141d0da7c64355fc8728c637a589f1027bb924601737181d038fa79ef782a138556e1b9d7b8'
+					
+					
+					//Lab BC - CtaBlockchainLab3
+					 //deployed_name: '72caf19e3ef2eaf72466516e6dac06b4c692bbf3ae097c5d26d886e098c16f344e69dc0eae1bbd4ffe2813e2a99e76d27fe43c359960b9ea66d5e6df866c3b55'
+					//deployed_name: '3b1ef936af680f22dc14f4682ac5cfef719bc77ebda5c67f4dff3b8cd63b93af4ce488944d9df74cdefdc1d3c0ad99b5d82753d8c0a80cbdefc460ab6877a5b5'
+					//deployed_name:    'd4663a752ce6375e3e09270335686972007c22079e10f8ce19229ce9944efd04f4f066ad42d9025106cef3ee1dd88b002c7a712c27f42d8b69502b670362a2b2'
+					}
+				};
+
+
+	// ---- Fire off SDK ---- //
+																	//sdk will populate this var in time, lets give it high scope by creating it here
+	ibc2.load(options, function (err, cc){														//parse/load chaincode, response has chaincode functions!
+		if(err != null){
+			console.log('! looks like an error loading the chaincode or network, app will fail\n', err);
+			if(!process.error) process.error = {type: 'load', msg: err.details};				//if it already exist, keep the last error
+		}
+		else{
+			chaincode = cc;														//pass the cc obj to part 2 node code
+
+			// ---- To Deploy or Not to Deploy ---- //
+			if(!cc.details.deployed_name || cc.details.deployed_name === ''){					//yes, go deploy
+				cc.deploy('init', ['99'], {save_path: './cc_summaries', delay_ms: 50000}, function(e){ //delay_ms is milliseconds to wait after deploy for conatiner to start, 50sec recommended
+					check_if_deployed(e, 1);
+					res.send("Code deployed successfully!");
+				});
+			}
+			else{																				//no, already deployed
+				console.log('chaincode summary file indicates chaincode has been previously deployed');
+				check_if_deployed(null, 1);
+			}
+		}
+	});
+	
+	
+	
+
+});
+
+
+// Transfer points in between members of the open points network
 app.get('/transferPoints', function(req, res){
   
 	var toUser = url.parse(req.url, true).query.receiver;
@@ -149,115 +226,115 @@ app.get('/transferPoints', function(req, res){
 	var amount = url.parse(req.url, true).query.amount;
 	var money = url.parse(req.url, true).query.money;
 	var activities = url.parse(req.url, true).query.activities;
-
-
 	
 	console.log('from: ', fromUser);
 	console.log('to: ', toUser);
 	console.log('contract is: ', contract);
 	chaincode.invoke.transferPoints([toUser, fromUser, type, description,contract, activities, amount, money], cb_invoked_api);				//create a new paper
 
-	//chaincode.query(['getNVAccounts', "BANKA"], cb_got_nv_accounts_api);
-	//chaincode.query(['getUserAccount', user], cb_got_nv_accounts_api);
 
-	res.send("success");  //success response
+	res.send("success");
 		
 
 });
 
-
-app.get('/getAppUrl', function(req, res){
+// Transfer points in between members of the open points network
+app.get('/addSmartContract', function(req, res){
   
-// ---- Load From VCAP aka Bluemix Services ---- //
-if(process.env.VCAP_APPLICATION){																	//load from vcap, search for service, 1 of the 3 should be found...
-	var servicesObject = JSON.parse(process.env.VCAP_APPLICATION);
+	var contractId = url.parse(req.url, true).query.contractid;
+	var title  = url.parse(req.url, true).query.title;
+	var condition1 = url.parse(req.url, true).query.condition1;
+	var condition2 = url.parse(req.url, true).query.condition2;
+	var discountRate = url.parse(req.url, true).query.discountrate;
 
-	res.send(servicesObject.application_uris[0]);  //success response
-		
-}
-
-else {
 	
-	res.send("No app URL found");
-}
+	console.log('contractId: ', contractId);
+	console.log('title: ', title);
+	console.log('condition1: ', condition1);
+	console.log('condition2: ', condition2);
+	console.log('discountRate: ', discountRate);
+	chaincode.invoke.addSmartContract([contractId, title, condition1, condition2, discountRate], cb_invoked_api);				//create a new paper
+
+
+	res.send("success");
+		
+
+});
+
+// Transfer points in between members of the open points network
+app.get('/incrementReferenceNumber', function(req, res){
+  
+	var dummyvar = "1";
+
+	chaincode.invoke.incrementReferenceNumber([dummyvar], cb_invoked_api);				//create a new paper
+
+
+	res.send("success");
+		
 
 });
 
 
 
-
+// Get a single member's account information
 app.get('/getCustomerPoints', function(req, res){
   
 	var userId = url.parse(req.url, true).query.userid;
 	
 	console.log('user: ',userId);
 	
-	//chaincode.query(['getNVAccounts', "BANKA"], cb_got_nv_accounts_api);
-	
 	chaincode.query.getUserAccount(['getUserAccount', userId], function(e,data){
-		cb_got_nv_accounts_api(e,data,res);
+		cb_received_response(e,data,res);
 	});
-
 	
-	//res.send("success");  //success response
-		
+
+});
+
+// Get a single member's account information
+app.get('/getReferenceNumber', function(req, res){
+  
+	var dummyVar = "1";
+	
+	
+	chaincode.query.getReferenceNumber(['getReferenceNumber', dummyVar], function(e,data){
+		cb_received_response(e,data,res);
+	});
+	
 
 });
 
 
+// Get a single member's transaction history
 app.get('/getUserTransactions', function(req, res){
   
 	var userid  = url.parse(req.url, true).query.userid;
 
 	
 	console.log('userid: ', userid);
-
-	//chaincode.query(['getNVAccounts', "BANKA"], cb_got_nv_accounts_api);
 	
 	chaincode.query.getTxs(['getTxs', userid], function(e,data){
-		cb_got_nv_accounts_api(e,data,res);
-	});
-
-	
-	//res.send("success");  //success response
-		
+		cb_received_response(e,data,res);
+	});	
 
 });
 
-
+// Callback function for invoking a chaincode function
 function cb_invoked_api(e, a){
 		console.log('response: ', e, a);
 }
-function cb_got_nv_accounts_api(e,  nvAccounts, res){
+
+// Callback function for querying the chaincode
+function cb_received_response(e,  data, res){
 		if(e != null){
-			console.log('Got NV Accounts error', e);
+			console.log('Received this error when calling a chaincode function', e);
 		}
 		else{
-			console.log(JSON.stringify(nvAccounts));
-			//sendMsg({msg: 'nvAccounts', nvAccounts: nvAccounts});
+			console.log(JSON.stringify(data));
 			if(res){
-				res.send(nvAccounts);
+				res.send(data);
 			}
 			
 		}
-}
-
-
-			//got the marble index, lets get each marble
-function cb_got_index(e, index){
-				if(e != null) console.log('marble index error:', e);
-				else{
-					try{
-						var json = JSON.parse(index);
-						for(var i in json){
-							console.log('!', i, json[i]);
-							chaincode.query.read([json[i]], cb_got_marble);					//iter over each, read their values
-						}
-					}
-					catch(e){
-						console.log('marbles index msg error:', e);
-					}
-				}
 }
 
 ////////////////////////////////////////////
@@ -291,20 +368,6 @@ else console.log('Running using Developer settings');
 
 
 // ============================================================================================================================
-// 														Deployment Tracking
-// ============================================================================================================================
-console.log('- Tracking Deployment');
-require('cf-deployment-tracker-client').track();		//reports back to us, this helps us judge interest! feel free to remove it
-
-
-// ============================================================================================================================
-// ============================================================================================================================
-// ============================================================================================================================
-// ============================================================================================================================
-// ============================================================================================================================
-// ============================================================================================================================
-
-// ============================================================================================================================
 // 														Warning
 // ============================================================================================================================
 
@@ -315,10 +378,7 @@ require('cf-deployment-tracker-client').track();		//reports back to us, this hel
 // ============================================================================================================================
 // 														Work Area
 // ============================================================================================================================
-var part1 = require('./utils/ws_part1');														//websocket message processing for part 1
-var part2 = require('./utils/ws_part2');														//websocket message processing for part 2
-var ws = require('ws');																			//websocket mod
-var wss = {};
+
 var Ibc1 = require('ibm-blockchain-js');														//rest based SDK for ibm blockchain
 var ibc = new Ibc1();
 
@@ -328,12 +388,12 @@ var ibc = new Ibc1();
 //this hard coded list is intentionaly left here, feel free to use it when initially starting out
 //please create your own network when you are up and running
 
-var peers = null;
-var users = null;
-var chaincode = null;	
+
 try{
 	//var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab1.json', 'utf8'));
-	var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab3.json', 'utf8'));
+	//var manual = JSON.parse(fs.readFileSync('mycreds_myblockchain.json', 'utf8'));
+	var manual = JSON.parse(fs.readFileSync('mycreds_ApiBlockchainAug2.json', 'utf8'));
+	
 	peers = manual.credentials.peers;
 	console.log('loading hardcoded peers');
 	users = null;																			//users are only found if security is on
@@ -369,12 +429,10 @@ if(process.env.VCAP_SERVICES){																	//load from vcap, search for serv
 	}
 }
 
+
+// Configure options for ibm-blockchain-js sdk only if a blockchain service with non-null peers has been found
 if (peers != null) {
-	
-	// ==================================
-// configure options for ibm-blockchain-js sdk
-// ==================================
-var options = 	{
+	var options = 	{
 					network:{
 						peers: [peers[0]],																	//lets only use the first peer! since we really don't need any more than 1
 						users: users,																		//dump the whole thing, sdk will parse for a good one
@@ -390,10 +448,14 @@ var options = 	{
 						//git_url: 'https://github.com/ibm-blockchain/marbles-chaincode/hyperledger/part2',	//GO get http url
 			
 			
-						zip_url: 'https://github.com/apiBlockchain/CtaBlockchainLab/archive/master.zip',
-						unzip_dir: 'CtaBlockchainLab-master',									//subdirectroy name of chaincode after unzipped
-						git_url: 'https://github.com/apiBlockchain/CtaBlockchainLab',			//GO git http url
+						//zip_url: 'https://github.com/apiBlockchain/CtaBlockchainLab/archive/master.zip',
+						//unzip_dir: 'CtaBlockchainLab-master',									//subdirectroy name of chaincode after unzipped
+						//git_url: 'https://github.com/apiBlockchain/CtaBlockchainLab',			//GO git http url
 						
+						
+						zip_url: 'https://github.com/apiBlockchain/CtaLabChaincode/archive/master.zip',
+						unzip_dir: 'CtaLabChaincode-master',									//subdirectroy name of chaincode after unzipped
+						git_url: 'https://github.com/apiBlockchain/CtaLabChaincode',			//GO git http url
 
 						//zip_url: 'https://github.com/apiBlockchain/apiBlockchainRebuild/archive/master.zip',
 						//unzip_dir: 'apiBlockchainRebuild-master',									//subdirectroy name of chaincode after unzipped
@@ -418,40 +480,38 @@ var options = 	{
 					
 					//Lab BC - CtaBlockchainLab3
 					 //deployed_name: '72caf19e3ef2eaf72466516e6dac06b4c692bbf3ae097c5d26d886e098c16f344e69dc0eae1bbd4ffe2813e2a99e76d27fe43c359960b9ea66d5e6df866c3b55'
-					deployed_name: '3b1ef936af680f22dc14f4682ac5cfef719bc77ebda5c67f4dff3b8cd63b93af4ce488944d9df74cdefdc1d3c0ad99b5d82753d8c0a80cbdefc460ab6877a5b5'
-					
+					//deployed_name: '3b1ef936af680f22dc14f4682ac5cfef719bc77ebda5c67f4dff3b8cd63b93af4ce488944d9df74cdefdc1d3c0ad99b5d82753d8c0a80cbdefc460ab6877a5b5'
+					//deployed_name:    'd4663a752ce6375e3e09270335686972007c22079e10f8ce19229ce9944efd04f4f066ad42d9025106cef3ee1dd88b002c7a712c27f42d8b69502b670362a2b2'
 					}
 				};
 				
-if(process.env.VCAP_SERVICES){
-	console.log('\n[!] looks like you are in bluemix, I am going to clear out the deploy_name so that it deploys new cc.\n[!] hope that is ok budddy\n');
-	options.chaincode.deployed_name = '';
-}
+	if(process.env.VCAP_SERVICES){
+		console.log('\n[!] looks like you are in bluemix, I am going to clear out the deploy_name so that it deploys new cc.\n[!] hope that is ok budddy\n');
+		options.chaincode.deployed_name = '';
+	}
 
-// ---- Fire off SDK ---- //
+	// ---- Fire off SDK ---- //
 																	//sdk will populate this var in time, lets give it high scope by creating it here
-ibc.load(options, function (err, cc){														//parse/load chaincode, response has chaincode functions!
-	if(err != null){
-		console.log('! looks like an error loading the chaincode or network, app will fail\n', err);
-		if(!process.error) process.error = {type: 'load', msg: err.details};				//if it already exist, keep the last error
-	}
-	else{
-		chaincode = cc;
-		part1.setup(ibc, cc);																//pass the cc obj to part 1 node code
-		part2.setup(ibc, cc);																//pass the cc obj to part 2 node code
+	ibc.load(options, function (err, cc){														//parse/load chaincode, response has chaincode functions!
+		if(err != null){
+			console.log('! looks like an error loading the chaincode or network, app will fail\n', err);
+			if(!process.error) process.error = {type: 'load', msg: err.details};				//if it already exist, keep the last error
+		}
+		else{
+			chaincode = cc;														//pass the cc obj to part 2 node code
 
-		// ---- To Deploy or Not to Deploy ---- //
-		if(!cc.details.deployed_name || cc.details.deployed_name === ''){					//yes, go deploy
-			cc.deploy('init', ['99'], {save_path: './cc_summaries', delay_ms: 50000}, function(e){ //delay_ms is milliseconds to wait after deploy for conatiner to start, 50sec recommended
-				check_if_deployed(e, 1);
-			});
+			// ---- To Deploy or Not to Deploy ---- //
+			if(!cc.details.deployed_name || cc.details.deployed_name === ''){					//yes, go deploy
+				cc.deploy('init', ['99'], {save_path: './cc_summaries', delay_ms: 50000}, function(e){ //delay_ms is milliseconds to wait after deploy for conatiner to start, 50sec recommended
+					check_if_deployed(e, 1);
+				});
+			}
+			else{																				//no, already deployed
+				console.log('chaincode summary file indicates chaincode has been previously deployed');
+				check_if_deployed(null, 1);
+			}
 		}
-		else{																				//no, already deployed
-			console.log('chaincode summary file indicates chaincode has been previously deployed');
-			check_if_deployed(null, 1);
-		}
-	}
-});
+	});
 	
 	
 }
@@ -460,24 +520,24 @@ ibc.load(options, function (err, cc){														//parse/load chaincode, respo
 //loop here, check if chaincode is up and running or not
 function check_if_deployed(e, attempt){
 	if(e){
-		cb_deployed(e);																		//looks like an error pass it along
+		// Do nothing
+		var x = 1;														
 	}
 	else if(attempt >= 30){																	//tried many times, lets give up and pass an err msg
 		console.log('[preflight check]', attempt, ': failed too many times, giving up');
 		var msg = 'chaincode is taking an unusually long time to start. this sounds like a network error, check peer logs';
 		if(!process.error) process.error = {type: 'deploy', msg: msg};
-		cb_deployed(msg);
 	}
 	else{
 		console.log('[preflight check]', attempt, ': testing if chaincode is ready');
-		chaincode.query.read(['_marbleindex'], function(err, resp){
+		chaincode.query.getUserAccount(['getUserAccount', "U2974034"], function(err, resp){
 			var cc_deployed = false;
 			try{
 				if(err == null){															//no errors is good, but can't trust that alone
-					if(resp === 'null') cc_deployed = true;									//looks alright, brand new, no marbles yet
+					if(resp === 'null') cc_deployed = true;									//looks alright, brand new
 					else{
 						var json = JSON.parse(resp);
-						if(json.constructor === Array) cc_deployed = true;					//looks alright, we have marbles
+						if(json.UserId == "U2974034") cc_deployed = true;					//looks alright
 					}
 				}
 			}
@@ -492,119 +552,7 @@ function check_if_deployed(e, attempt){
 			}
 			else{
 				console.log('[preflight check]', attempt, ': success');
-				cb_deployed(null);															//yes, lets go!
-			}
-		});
-	}
-}
-
-// ============================================================================================================================
-// 												WebSocket Communication Madness
-// ============================================================================================================================
-function cb_deployed(e){
-	if(e != null){
-		//look at tutorial_part1.md in the trouble shooting section for help
-		console.log('! looks like a deploy error, holding off on the starting the socket\n', e);
-		if(!process.error) process.error = {type: 'deploy', msg: e.details};
-	}
-	else{
-		console.log('------------------------------------------ Websocket Up ------------------------------------------');
-		
-		wss = new ws.Server({server: server});												//start the websocket now
-		wss.on('connection', function connection(ws) {
-			ws.on('message', function incoming(message) {
-				console.log('received ws msg:', message);
-				try{
-					var data = JSON.parse(message);
-					part1.process_msg(ws, data);											//pass the websocket msg to part 1 processing
-					part2.process_msg(ws, data);											//pass the websocket msg to part 2 processing
-				}
-				catch(e){
-					console.log('ws message error', e);
-				}
-			});
-			
-			ws.on('error', function(e){console.log('ws error', e);});
-			ws.on('close', function(){console.log('ws closed');});
-		});
-		
-		wss.broadcast = function broadcast(data) {											//send to all connections
-			wss.clients.forEach(function each(client) {
-				try{
-					client.send(JSON.stringify(data));
-				}
-				catch(e){
-					console.log('error broadcast ws', e);
-				}
-			});
-		};
-		
-		// ========================================================
-		// Monitor the height of the blockchain
-		// ========================================================
-		ibc.monitor_blockheight(function(chain_stats){										//there is a new block, lets refresh everything that has a state
-			if(chain_stats && chain_stats.height){
-				console.log('hey new block, lets refresh and broadcast to all', chain_stats.height-1);
-				ibc.block_stats(chain_stats.height - 1, cb_blockstats);
-				wss.broadcast({msg: 'reset'});
-				chaincode.query.read(['_marbleindex'], cb_got_index);
-				chaincode.query.read(['_opentrades'], cb_got_trades);
-			}
-			
-			//got the block's stats, lets send the statistics
-			function cb_blockstats(e, stats){
-				if(e != null) console.log('blockstats error:', e);
-				else {
-					chain_stats.height = chain_stats.height - 1;							//its 1 higher than actual height
-					stats.height = chain_stats.height;										//copy
-					wss.broadcast({msg: 'chainstats', e: e, chainstats: chain_stats, blockstats: stats});
-				}
-			}
-			
-			//got the marble index, lets get each marble
-			function cb_got_index(e, index){
-				if(e != null) console.log('marble index error:', e);
-				else{
-					try{
-						var json = JSON.parse(index);
-						for(var i in json){
-							console.log('!', i, json[i]);
-							chaincode.query.read([json[i]], cb_got_marble);					//iter over each, read their values
-						}
-					}
-					catch(e){
-						console.log('marbles index msg error:', e);
-					}
-				}
-			}
-			
-			//call back for getting a marble, lets send a message
-			function cb_got_marble(e, marble){
-				if(e != null) console.log('marble error:', e);
-				else {
-					try{
-						wss.broadcast({msg: 'marbles', marble: JSON.parse(marble)});
-					}
-					catch(e){
-						console.log('marble msg error', e);
-					}
-				}
-			}
-			
-			//call back for getting open trades, lets send the trades
-			function cb_got_trades(e, trades){
-				if(e != null) console.log('trade error:', e);
-				else {
-					try{
-						trades = JSON.parse(trades);
-						if(trades && trades.open_trades){
-							wss.broadcast({msg: 'open_trades', open_trades: trades.open_trades});
-						}
-					}
-					catch(e){
-						console.log('trade msg error', e);
-					}
-				}
+				console.log("The app is ready to go!");														//yes, lets go!
 			}
 		});
 	}

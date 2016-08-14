@@ -1,0 +1,38 @@
+html{width:100%; font-family:Helvetica, sans-serif;}
+
+body{width:960px; margin:0 auto; background-color:#ccc;}
+
+.content{width:100%; background:#fff;min-height:700px;}
+
+
+
+table {display: table; border-collapse: separate;border-spacing: 0px;border-color:#cbc9c9;border-width:1px;}
+
+hr {margin-bottom;10px;}
+
+.purchase-header{padding-top:10px;}
+
+.top-header{position: relative;height:40px;padding:10px 15px 0px 15px;}
+
+.top-header:after {content: "";	display: table;	clear: both; width: 100%;}
+
+.col50{width:50%;position: relative;	float: left;}
+
+.main-font{font-size:18pt;}
+
+.user{text-align:right;padding-top:2px;}
+
+input[type=radio]{margin-top:10px;}
+
+.purchase-btn{width: 200px;text-align: center; color: #fff; background: #e2564f; border-radius: 5px; border: none; padding: 7px 0px;font-size: 11pt;font-weight: lighter;}
+
+.transaction-btn{width: 200px;text-align: center; color: #fff; background: #808685; border-radius: 5px; border: none; padding: 7px 0px;font-size: 11pt;font-weight: lighter;}
+
+td{padding:5px;}
+
+.amount{padding:4px;border-radius:5px;border:#959595 solid 1px;font-size: 11pt;}
+
+/*select{border: 1px solid #808685;  height: 27px;font-size: 11pt;-moz-appearance : none; border-radius:5px;background-image:url('arrow.png');background-repeat:no-repeat;background-position:0px 40px;}
+*/
+
+select{height:25px; font-size:11pt;}

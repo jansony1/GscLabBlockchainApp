@@ -1,56 +1,130 @@
-# Marbles Demo
+# IBM Blockchain - Open Points Loyalty Application
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/ibm-blockchain/marbles.git)
-
-
-# Application Background  
-
-Hold on to your hats everyone, this application is going to demonstrate transferring marbles between two users leveraging IBM Blockchain.
-We are going to do this in Node.js and a bit of GoLang. 
-The backend of this application will be the GoLang code running in our blockchain network. 
-The chaincode itself will create a marble by storing it to the chaincode state. 
-The chaincode itself is able to store data as a string in a key/value pair setup. 
-Thus we will stringify JSON objects to store more complex structures. 
-
-Attributes of a marble:
-
-	1. name (unique string, will be used as key)
-	1. color (string, css color names)
-	1. size (int, size in mm)
-	1. user (string)
-	
-We are going to create a Web UI that can set these values and pass them to the chaincode. 
-Interacting with the chaincode is done with a HTTP REST call to a peer on the network. 
-The ibc-js SDK will abstract the details of the REST calls away.
-This allow us to use dot notation to call our GoLang functions (such as `chaincode.init_marble(args)`). 
-
-Start the tutorials below to have your own marbles blockchain demo!
-
-## Tutorial / Documentation
-- Looking for chaincode documentation? Check out the [learn chaincode](https://github.com/IBM-Blockchain/learn-chaincode) repo - **start here!**
-- Tutorial for Marbles [Part 1](./tutorial_part1.md)
-- Tutorial for Marbles [Part 2](./tutorial_part2.md) 
-- Documentation for IBM Blockchain [IBC-JS SDK](https://github.com/IBM-Blockchain/ibm-blockchain-js) (our REST based SDK)
-
-***
-
-## Projects Contents
-
-If you **run marbles on local host** you will have these two urls:
-
-1. Marbles Part 1   -	[http://localhost:3000/p1](http://localhost:3000/p1)
-1. Marbles Part 2   -	[http://localhost:3000/p2](http://localhost:3000/p2)
+Welcome! These instructions describe the prerequisites you should complete before attending the lab session. Please follow these steps to ensure that you fully 
+prepared to participate on the day of the lab.
 
 
-## Privacy Notice
+<a name="bluemix">
+# Getting Started using Bluemix
+</a>
 
-This web application includes code to track deployments to [IBM Bluemix](https://www.bluemix.net/) and other Cloud Foundry platforms. The following information is sent to a [Deployment Tracker](https://github.com/cloudant-labs/deployment-tracker) service on each deployment:
 
-* Application Name (`application_name`)
-* Space ID (`space_id`)
-* Application Version (`application_version`)
-* Application URIs (`application_uris`)
+## Before you begin
 
-This data is used by IBM to track metrics around deployments of sample applications to IBM Bluemix to measure the usefulness of our examples, so that we can continuously improve the content we offer to you. Only deployments of sample applications that include code to ping the Deployment Tracker service will be tracked.
+<b>1. Ensure that you have an account on [IBM Bluemix](https://console.ng.bluemix.net). (If you already have an account, you can proceed to step 2). </b>
 
-**Deployment tracking can be disabled by deleting the 'Deployment Tracking' section in [app.js.](app.js#L120)**
+  1.1 Register for a [Bluemix account](https://console.ng.bluemix.net/registration/), fill out the required details and click 'Create Account'.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/register.PNG)
+
+   You will receive a message to check your email.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/chkmail.PNG)
+
+   1.2 Please check your email and look for a registration confirmation email from Bluemix.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/mailmsg.PNG)
+
+
+   1.3 Click on 'Confirm your account' and receive a 'Success' message.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ![](readme_images/success.PNG)
+
+
+   1.4 Click 'Login' and login with your Bluemix credentials.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ![](readme_images/logmail.PNG)
+   
+
+
+   1.5 Create an Organization and enter any organization name.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/orgmail1.PNG)
+
+
+
+   1.6 Create a Space and enter a space name. You can also choose the default space name of 'dev'.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/spacemail.PNG)
+   
+
+
+   1.7 After you receive a success message, please click 'I'm Ready'
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/summary_success.PNG)
+ 
+
+ You will land on your Bluemix Dashboard.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/dashboard.PNG)
+
+
+
+<b> 2. Ensure that you have the necessary space available in your Bluemix account to complete the lab. During the lab, you will be required to deploy 1 application and 2 services.</b>
+   * Go to your Bluemix Dashboard to check if you have the required space. 
+     
+   * The 'Services & APIs' tile shows the number of services you have available. You will require space to deploy two services during the lab. 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/services2.PNG)
+
+   * The 'Cloud Foundry Apps' tile shows the memory you have available for apps. You will require at least 256 MB of free space to deploy an app during the lab. 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/services1.PNG)
+
+## Deploy the App
+
+<b>1. Click on the Deploy to Bluemix below.</b>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/vikramrengarajan/gscfss-conversation-tone)
+
+<b>2. Log in with your Bluemix account.</b>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/deploy.PNG)
+
+<b>3. If asked to pick up an alias by following the steps below, else go to the next step.</b>
+
+3.1 Enter a unique alias name and click create.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/alias.PNG)
+
+
+3.2 Verify your alias name and click continue.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/cont.PNG)
+
+
+<b>4. Name your app and select your Region, Organization and space and Click Deploy.</b>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/deploy1.PNG)
+
+
+* The status of the deployment is shown. This can take some time.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/createproject.PNG)
+
+* The deployment process performs the following actions:
+  - Creates the OpenPointsBlockchainApp.
+  - Creates the OpenPointsBlockchainService.
+
+Once the deployment is complete, your dashboard should contain the app and the service as shown below. 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/res.PNG)
+
+
+<b>5. Once your app has deployed, select 'VIEW YOUR APP'.</b>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/viewyourapp.PNG)
+
+<b>6. The application and service have been successfully deployed, and you are now ready to begin the lab!</b>
+
+
+# License
+
+  This sample code is licensed under Apache 2.0.
+  Full license text is available in [LICENSE](LICENSE).
+
+
+
+## Open Source @ IBM
+
+  Find more open source projects on the
+  [IBM Github Page](http://ibm.github.io/).
+
