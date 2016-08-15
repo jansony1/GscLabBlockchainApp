@@ -1,12 +1,12 @@
 # IBM Blockchain - Open Points Loyalty Application
 
-Welcome! These instructions describe the prerequisites you should complete before attending the lab session. Please follow these steps to ensure that you fully 
+Welcome! These instructions describe the prerequisites you should complete before attending the lab session. Please follow these steps to ensure that you are fully 
 prepared to participate on the day of the lab.
 
 
 ## Prepare your Bluemix account
 
-<b>1. Ensure that you have an account on [IBM Bluemix](https://console.ng.bluemix.net). (If you already have an account, you can proceed to step 2). </b>
+<b>1. Ensure that you have an account on [IBM Bluemix](https://console.ng.bluemix.net). (If you already have an account, you can proceed to step 2 in this section). </b>
 
   1.1 Register for a [Bluemix account](https://console.ng.bluemix.net/registration/), fill out the required details and click 'Create Account'.
 
@@ -55,14 +55,13 @@ prepared to participate on the day of the lab.
 
 
 
-<b> 2. Ensure that you have the necessary space available in your Bluemix account to complete the lab. During the lab, you will be required to deploy 1 application and 2 services.</b>
-   * Go to your Bluemix Dashboard to check if you have the required space. 
-     
+<b> 2. Ensure that you have the necessary space available in your Bluemix account to complete the lab. During the lab, you will be required to deploy 1 application and 2 services.  Go to your Bluemix Dashboard to check if you have the required space: </b>
+  
    * The 'Services & APIs' tile shows the number of services you have available. You will require space to deploy two services during the lab. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/services2.PNG)
 
-   * The 'Cloud Foundry Apps' tile shows the memory you have available for apps. You will require at least 256 MB of free space to deploy an app during the lab. 
+   * The 'Cloud Foundry Apps' tile shows the memory you have available for apps. You will require at least 512 MB of free space to deploy an app during the lab. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/services1.PNG)
 
@@ -76,7 +75,7 @@ prepared to participate on the day of the lab.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/deploy.PNG)
 
-<b>3. If asked to pick up an alias by following the steps below, else go to the next step.</b>
+<b>3. If you are asked to choose an alias, then follow these instructions. Otherwise, proceed to step 4 in this section. </b>
 
 3.1 Enter a unique alias name and click create.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/alias.PNG)
@@ -86,25 +85,25 @@ prepared to participate on the day of the lab.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/cont.PNG)
 
 
-<b>4. Name your app and select your Region, Organization and space and Click Deploy.</b>
+<b>4. Name your app 'OpenPointsBlockchainApp', and then select the Region, Organization and Space where the app will be deployed. Click 'DEPLOY'.</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/deploy1.PNG)
 
 
-* The status of the deployment is shown. This can take some time.
+* The status of the deployment is shown. This can take approximately 2 minutes to complete.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/createproject.PNG)
 
 * The deployment process performs the following actions:
-  - Creates the OpenPointsBlockchainApp.
-  - Creates the OpenPointsBlockchainService.
+  - Creates the application 'OpenPointsBlockchainApp'.
+  - Creates the service 'OpenPointsBlockchainService'.
 
 Once the deployment is complete, your dashboard should contain the app and the service as shown below. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/res.PNG)
 
 
-<b>5. Once your app has deployed, select 'VIEW YOUR APP'.</b>
+<b>5. After the deployment process has finsihed, select 'VIEW YOUR APP'.</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/viewyourapp.PNG)
 
