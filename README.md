@@ -4,12 +4,7 @@ Welcome! These instructions describe the prerequisites you should complete befor
 prepared to participate on the day of the lab.
 
 
-<a name="bluemix">
-# Getting Started using Bluemix
-</a>
-
-
-## Before you begin
+## Prepare your Bluemix account
 
 <b>1. Ensure that you have an account on [IBM Bluemix](https://console.ng.bluemix.net). (If you already have an account, you can proceed to step 2). </b>
 
@@ -73,7 +68,7 @@ prepared to participate on the day of the lab.
 
 ## Deploy the App
 
-<b>1. Click on the Deploy to Bluemix below.</b>
+<b>1. Click on the 'Deploy to Bluemix' button below.</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/vikramrengarajan/gscfss-conversation-tone)
 
