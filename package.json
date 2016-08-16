@@ -1,5 +1,5 @@
 {
-	"name": "marbles",
+	"name": "OpenPointsBlockchainApp",
 	"version": "0.0.1",
 	"description": "A Node.js web application that demonstrates utilizing IBM Blockchain JS to call REST APIs on the blockchain.",
 	"main": "app.js",
@@ -38,7 +38,7 @@
 		"gulp-buster": "*"
 	},
 	"author": {
-    	"name": "David Huffman"
+    	"name": "IBM GSC FSS"
 	},
 	"license": "Apache-2.0"
 }

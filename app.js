@@ -34,7 +34,23 @@ var port = setup.SERVER.PORT;
 // Set chaincode variables
 var peers = null;
 var users = null;
-var chaincode = null;	
+var chaincode = null;
+
+// Set chaincode source repository
+var chaincode_zip_url = "https://github.com/apiBlockchain/GscLabChaincode/archive/master.zip";
+var	chaincode_unzip_dir ="GscLabChaincode-master";						
+var	chaincode_git_url = "https://github.com/apiBlockchain/GscLabChaincode";
+
+// Set chaincode source repository for Part C
+//var chaincode_zip_url = "https://github.com/apiBlockchain/GscLabChaincodePartC/archive/master.zip";
+//var	chaincode_unzip_dir ="GscLabChaincodePartC-master";						
+//var	chaincode_git_url = "https://github.com/apiBlockchain/GscLabChaincodePartC";		
+
+
+// Quick test for api demo
+//var chaincode_zip_url = "https://github.com/apiBlockchain/ApiEconomyDemoChaincode/archive/master.zip";
+//var	chaincode_unzip_dir ="ApiEconomyDemoChaincode-master";						
+//var	chaincode_git_url = "https://github.com/apiBlockchain/ApiEconomyDemoChaincode";	
 
 ////////  Pathing and Module Setup  ////////
 app.set('views', path.join(__dirname, 'views'));
@@ -105,6 +121,36 @@ app.get('/', function(req, res){
 		}
 		
 		data = data.replace('#HOSTNAME#', hostnameForHtml);
+		data = data.replace('#GITURL#', chaincode_git_url);
+		
+		console.log('parsed html file succeeded');
+		res.send(data);
+    }else{
+        console.log(err);
+    }
+
+	});
+});
+
+// Set the landing page for Part C by sending an html file as a response
+app.get('/', function(req, res){
+
+	var filePath = path.join(__dirname, '/public/openPoints/homePartC.html');
+	var homeFile = fs.readFile(filePath); 
+
+	fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
+    if (!err){
+		
+		var hostnameForHtml = "";
+		if (process.env.VCAP_APPLICATION) {
+			var servicesObject = JSON.parse(process.env.VCAP_APPLICATION);
+			hostnameForHtml = servicesObject.application_uris[0];
+		}	
+		else {
+			hostnameForHtml = "localhost:3000";
+		}
+		
+		data = data.replace('#HOSTNAME#', hostnameForHtml);
 		console.log('parsed html file succeeded');
 		res.send(data);
     }else{
@@ -142,45 +188,11 @@ app.get('/deployPartC', function(req, res) {
 								}
 					},
 					chaincode:{
-						//zip_url: 'https://github.com/ibm-blockchain/marbles-chaincode/archive/master.zip',
-						//unzip_dir: 'marbles-chaincode-master/hyperledger/part2',							//subdirectroy name of chaincode after unzipped
-						//git_url: 'https://github.com/ibm-blockchain/marbles-chaincode/hyperledger/part2',	//GO get http url
-			
-			
-						//zip_url: 'https://github.com/apiBlockchain/CtaBlockchainLab/archive/master.zip',
-						//unzip_dir: 'CtaBlockchainLab-master',									//subdirectroy name of chaincode after unzipped
-						//git_url: 'https://github.com/apiBlockchain/CtaBlockchainLab',			//GO git http url
-						
-						
-						zip_url: 'https://github.com/apiBlockchain/CtaLabChaincode/archive/master.zip',
-						unzip_dir: 'CtaLabChaincode-master',									//subdirectroy name of chaincode after unzipped
-						git_url: 'https://github.com/apiBlockchain/CtaLabChaincode',			//GO git http url
+	
+						zip_url: 'https://github.com/apiBlockchain/GscLabChaincodePartC/archive/master.zip',
+						unzip_dir: 'GscLabChaincodePartC-master',									//subdirectroy name of chaincode after unzipped
+						git_url: 'https://github.com/apiBlockchain/GscLabChaincodePartC',			//GO git http url
 
-						//zip_url: 'https://github.com/apiBlockchain/apiBlockchainRebuild/archive/master.zip',
-						//unzip_dir: 'apiBlockchainRebuild-master',									//subdirectroy name of chaincode after unzipped
-						//git_url: 'https://github.com/apiBlockchain/apiBlockchainRebuild',			//GO git http url
-			
-						//zip_url: 'https://github.com/apiBlockchain/nv-chaincode/archive/master.zip',
-						//unzip_dir: 'nv-chaincode-master',									//subdirectroy name of chaincode after unzipped
-						//git_url: 'https://github.com/apiBlockchain/nv-chaincode',			//GO git http url
-					
-					
-						//hashed cc name from prev deployment, comment me out to always deploy, uncomment me when its already deployed to skip deploying again
-						//deployed_name: '8c5677016abb7b4885b8dc40bb5b28f1554888cd766e2c945bc61bca03b349092f19197d32785254c692c9210db34c31821efc89e8a9f4dcb3f5575bebb4584b'
-						//deployed_name: '8c5677016abb7b4885b8dc40bb5b28f1554888cd766e2c945bc61bca03b349092f19197d32785254c692c9210db34c31821efc89e8a9f4dcb3f5575bebb4584b'
-						
-						// Standard marbles BC
-						//deployed_name: '50d9a2b4f93eb520b48f750b174dd90a8c4e5bf9836ee37e56d67fccccabe303ac95d3d299185215fbe90eef70a668363a3c7edd500e83f333c2af06dc0b1557'
-					
-					   // Lab BC - CtaBlockchainLab1
-					   //deployed_name: '1342acdbcc60936f7f5ec84baee7a38e9b378011be88e96067b69d31b29ff39fdb4c8781ded06be581ab480d5db67995bfd0d681fcff836e4e7f74a1dd4f22ae'
-					  //   deployed_name: 'b83303cd4dcd2e4a465839440758d2a3ef87e84a5f1f6bf7d2812141d0da7c64355fc8728c637a589f1027bb924601737181d038fa79ef782a138556e1b9d7b8'
-					
-					
-					//Lab BC - CtaBlockchainLab3
-					 //deployed_name: '72caf19e3ef2eaf72466516e6dac06b4c692bbf3ae097c5d26d886e098c16f344e69dc0eae1bbd4ffe2813e2a99e76d27fe43c359960b9ea66d5e6df866c3b55'
-					//deployed_name: '3b1ef936af680f22dc14f4682ac5cfef719bc77ebda5c67f4dff3b8cd63b93af4ce488944d9df74cdefdc1d3c0ad99b5d82753d8c0a80cbdefc460ab6877a5b5'
-					//deployed_name:    'd4663a752ce6375e3e09270335686972007c22079e10f8ce19229ce9944efd04f4f066ad42d9025106cef3ee1dd88b002c7a712c27f42d8b69502b670362a2b2'
 					}
 				};
 
@@ -390,9 +402,11 @@ var ibc = new Ibc1();
 
 
 try{
-	//var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab1.json', 'utf8'));
+	//var manual = JSON.parse(fs.readFileSync('mycreds_CtaBlockchainLab3.json', 'utf8'));
 	//var manual = JSON.parse(fs.readFileSync('mycreds_myblockchain.json', 'utf8'));
-	var manual = JSON.parse(fs.readFileSync('mycreds_ApiBlockchainAug2.json', 'utf8'));
+	//var manual = JSON.parse(fs.readFileSync('mycreds_ApiBlockchainAug2.json', 'utf8'));
+	var manual = JSON.parse(fs.readFileSync('mycreds_BlockchainAug15.json', 'utf8'));
+	//var manual = JSON.parse(fs.readFileSync('mycreds_BlockchainAug16.json', 'utf8'));
 	
 	peers = manual.credentials.peers;
 	console.log('loading hardcoded peers');
@@ -442,46 +456,10 @@ if (peers != null) {
 									maxRetry: 1																//how many times should we retry register before giving up
 								}
 					},
-					chaincode:{
-						//zip_url: 'https://github.com/ibm-blockchain/marbles-chaincode/archive/master.zip',
-						//unzip_dir: 'marbles-chaincode-master/hyperledger/part2',							//subdirectroy name of chaincode after unzipped
-						//git_url: 'https://github.com/ibm-blockchain/marbles-chaincode/hyperledger/part2',	//GO get http url
-			
-			
-						//zip_url: 'https://github.com/apiBlockchain/CtaBlockchainLab/archive/master.zip',
-						//unzip_dir: 'CtaBlockchainLab-master',									//subdirectroy name of chaincode after unzipped
-						//git_url: 'https://github.com/apiBlockchain/CtaBlockchainLab',			//GO git http url
-						
-						
-						zip_url: 'https://github.com/apiBlockchain/CtaLabChaincode/archive/master.zip',
-						unzip_dir: 'CtaLabChaincode-master',									//subdirectroy name of chaincode after unzipped
-						git_url: 'https://github.com/apiBlockchain/CtaLabChaincode',			//GO git http url
-
-						//zip_url: 'https://github.com/apiBlockchain/apiBlockchainRebuild/archive/master.zip',
-						//unzip_dir: 'apiBlockchainRebuild-master',									//subdirectroy name of chaincode after unzipped
-						//git_url: 'https://github.com/apiBlockchain/apiBlockchainRebuild',			//GO git http url
-			
-						//zip_url: 'https://github.com/apiBlockchain/nv-chaincode/archive/master.zip',
-						//unzip_dir: 'nv-chaincode-master',									//subdirectroy name of chaincode after unzipped
-						//git_url: 'https://github.com/apiBlockchain/nv-chaincode',			//GO git http url
-					
-					
-						//hashed cc name from prev deployment, comment me out to always deploy, uncomment me when its already deployed to skip deploying again
-						//deployed_name: '8c5677016abb7b4885b8dc40bb5b28f1554888cd766e2c945bc61bca03b349092f19197d32785254c692c9210db34c31821efc89e8a9f4dcb3f5575bebb4584b'
-						//deployed_name: '8c5677016abb7b4885b8dc40bb5b28f1554888cd766e2c945bc61bca03b349092f19197d32785254c692c9210db34c31821efc89e8a9f4dcb3f5575bebb4584b'
-						
-						// Standard marbles BC
-						//deployed_name: '50d9a2b4f93eb520b48f750b174dd90a8c4e5bf9836ee37e56d67fccccabe303ac95d3d299185215fbe90eef70a668363a3c7edd500e83f333c2af06dc0b1557'
-					
-					   // Lab BC - CtaBlockchainLab1
-					   //deployed_name: '1342acdbcc60936f7f5ec84baee7a38e9b378011be88e96067b69d31b29ff39fdb4c8781ded06be581ab480d5db67995bfd0d681fcff836e4e7f74a1dd4f22ae'
-					  //   deployed_name: 'b83303cd4dcd2e4a465839440758d2a3ef87e84a5f1f6bf7d2812141d0da7c64355fc8728c637a589f1027bb924601737181d038fa79ef782a138556e1b9d7b8'
-					
-					
-					//Lab BC - CtaBlockchainLab3
-					 //deployed_name: '72caf19e3ef2eaf72466516e6dac06b4c692bbf3ae097c5d26d886e098c16f344e69dc0eae1bbd4ffe2813e2a99e76d27fe43c359960b9ea66d5e6df866c3b55'
-					//deployed_name: '3b1ef936af680f22dc14f4682ac5cfef719bc77ebda5c67f4dff3b8cd63b93af4ce488944d9df74cdefdc1d3c0ad99b5d82753d8c0a80cbdefc460ab6877a5b5'
-					//deployed_name:    'd4663a752ce6375e3e09270335686972007c22079e10f8ce19229ce9944efd04f4f066ad42d9025106cef3ee1dd88b002c7a712c27f42d8b69502b670362a2b2'
+					chaincode:{						
+						zip_url: chaincode_zip_url,
+						unzip_dir: chaincode_unzip_dir,					
+						git_url:  chaincode_git_url,		
 					}
 				};
 				
@@ -523,7 +501,7 @@ function check_if_deployed(e, attempt){
 		// Do nothing
 		var x = 1;														
 	}
-	else if(attempt >= 30){																	//tried many times, lets give up and pass an err msg
+	else if(attempt >= 50){																	//tried many times, lets give up and pass an err msg
 		console.log('[preflight check]', attempt, ': failed too many times, giving up');
 		var msg = 'chaincode is taking an unusually long time to start. this sounds like a network error, check peer logs';
 		if(!process.error) process.error = {type: 'deploy', msg: msg};

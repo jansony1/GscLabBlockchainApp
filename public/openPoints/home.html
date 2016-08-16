@@ -11,6 +11,7 @@
 <script type="text/javascript">
 
 var hostName = "#HOSTNAME#";
+var gitUrl = "#GITURL#";
 var localUrlStub = "http://" + hostName;
 
 function a(){
@@ -56,17 +57,12 @@ if (window.XMLHttpRequest) {
 
 xmlhttp.onreadystatechange = function() {
   if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-    //document.write(xmlhttp.responseText);
-	//window.alert(xmlhttp.responseText);
 	parsingFunction(xmlhttp.responseText);
-	//return xmlhttp.responseText;
-	//document.write(responseText);
   } else {
     // wait for the call to complete
   }
 };
-//var url = "http://localhost:3000/getAllContracts"
-//var url = "https://maps.googleapis.com/maps/api/geocode/json?address=1500+Amphitheatre+Parkway,+Mountain+View,+CA&key="
+
 xmlhttp.open('GET', url, true);
 xmlhttp.send(null);
 
@@ -262,7 +258,7 @@ transferString += "&contract=" + contract + "&description=" + description;
 
 var url = localUrlStub + "/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
 
-window.alert(url);
+//window.alert(url);
 blockchainRestApi(url, parseTravelPurchase);
 
 }
@@ -296,12 +292,17 @@ var url = localUrlStub + "/getCustomerPoints?userid=" + strUser;
 
 //window.alert(url);
 blockchainRestApi(url, parseUserAccount);
+
+
+displayUserTransactions();
 }
 
 $( document ).ready(function() {
    document.getElementById("Travel Offers").addEventListener("click", displaySmartContracts);
    document.getElementById("Account Details").addEventListener("click", displayUserAccount);
 
+
+   
    //var tabcontent = document.getElementById("FeedbackTab");
    //tabcontent.style.display = "none";
 });
@@ -312,15 +313,19 @@ function changeUserAccount(){
 	var e = document.getElementById("userAccount");
 	var currentIndex = e.selectedIndex;
     var currentUserId = e.options[e.selectedIndex].value;
-	//location.reload();
-	e = document.getElementById("userAccount");
-
-	var contractTab = document.getElementById("SmartContractTab");
-	if (currentUserId == "T5940872") {
-		contractTab.style.display = "block";
-	}
-	else {
-		contractTab.style.display = "none";
+	
+	
+	if (gitUrl.indexOf("PartC") != -1) {
+		
+   
+		var contractTab = document.getElementById("SmartContractTab");
+		if (currentUserId == "T5940872") {
+			contractTab.style.display = "block";
+		}
+		else {
+			contractTab.style.display = "none";
+		}
+	
 	}
 
 }
@@ -414,15 +419,18 @@ $( document ).ready(function() {
 </div>
 
 <div id="Account Details" class="tabcontent">
-  <h3>Account Details</h3>
+  <h3>Account Balance</h3>
   <hr>
 
 	<p id="userAccountTable"> </p>
 
-
-
-	<button onclick="displayUserTransactions()" class="transaction-btn">Get Transaction History</button>
+	<p> </p>
+	<h3>Transaction History</h3>
+    <hr>
+	
 	<p id="transactionsTable"></p>
+	
+	
 
 </div>
 
