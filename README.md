@@ -69,7 +69,7 @@ prepared to participate on the day of the lab.
 
 <b>1. Click on the 'Deploy to Bluemix' button below.</b>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/apiBlockchain/CtaLabBlockchainApp.git)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/apiBlockchain/GscLabBlockchainApp.git)
 
 <b>2. Log in with your Bluemix account.</b>
 
