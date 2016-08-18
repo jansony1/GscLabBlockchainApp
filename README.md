@@ -85,7 +85,9 @@ prepared to participate on the day of the lab.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/cont.PNG)
 
 
-<b>4. Name your app 'OpenPointsBlockchainApp', and then select the Region, Organization and Space where the app will be deployed. Click 'DEPLOY'.</b>
+<b>4.  Leave the default app name that Bluemix chooses as is. You may modify the default Organization 
+and Space if you would like the app deployed to a specific area of your Bluemix account. Otherwise, accept the default values
+and click 'DEPLOY'.</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/deploy1.PNG)
 
