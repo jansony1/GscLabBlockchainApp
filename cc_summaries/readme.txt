@@ -1,0 +1,1 @@
+this folder stores the chaincode ids once a blockchain has been deployed
