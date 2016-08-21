@@ -10,13 +10,9 @@
 
 <script type="text/javascript">
 
-var hostName = "#HOSTNAME#";
-var gitUrl = "#GITURL#";
-var localUrlStub = "http://" + hostName;
-
-function a(){
-$.getJSON(url,function(data) { alert(data);});
-}
+var hostName 		= "#HOSTNAME#";
+var gitUrl 			= "#GITURL#";
+var localUrlStub 	= "http://" + hostName;
 
 function openTab(evt, tabName) {
     // Declare all variables
@@ -38,6 +34,11 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block";
 	document.getElementById(tabName).click();
     evt.currentTarget.className += " active";
+	
+	if (tabName == "Create Travel Offers") {
+		document.getElementById("CreateOfferPage").style.display = "block";
+		document.getElementById("CreateOfferMessage").style.display = "none";
+	}
 }
 
 function blockchainRestApi(url, parsingFunction) {
@@ -71,15 +72,16 @@ xmlhttp.send(null);
 function parseSmartContracts(response) {
 	//window.alert(response);
     var arr = JSON.parse(response);
+
     var i,j;
-   var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Offer</td>";
+    var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Offer</td>";
     out    += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Terms</td></tr>";
-	var arrLength  = arr.length;
+	var arrLength  = arr.array.length;
 
 	//document.write(contract1.ID + " " + contract2.ID);
 
 	for(i = 0; i < arrLength; i++) {
-		var thisContract = arr[i];
+		var thisContract = arr.array[i];
         out += "<tr><td style='padding-left:10px;'>" + thisContract.Title + "</td><td>";
 
 		var numConditions = thisContract.Conditions.length;
@@ -100,6 +102,7 @@ function parseSmartContracts(response) {
 
 function parseTransactions(response) {
     var arr = JSON.parse(response);
+	
     var i;
    var out = "<table border='1'><tr><td style='width: 200px; text-align: center; color: black;padding:7px; color:#000; background-color:#f1f1f1;'>Date</td>";
     out    += "<td style='width: 200px; color: black; text-align: center;padding:7px; color:#000; background-color:#f1f1f1;'>Description </td>";
@@ -123,7 +126,7 @@ function parseTransactions(response) {
 		var res = txsDateStr.split("T");
 		//var txsDate = new Date(res[0]);
 		var txsDate = res[0];
-		var timeStr = res[1].split(":00Z")
+		var timeStr = res[1].split("Z")
 
         out += "<tr><td>" +
         //txsDate.toDateString() + " " + timeStr[0] +
@@ -161,21 +164,25 @@ function parseTransactions(response) {
 
 
 function parseTransfer(response) {
-	document.getElementById("Transfer Points").innerHTML = "Transfer " + response + "!";
+
+	document.getElementById('TransferPointsPage').style.display = "none"
+	document.getElementById('TransferPointsMessage').style.display = "block"
+
+	
 }
 
 function parseTravelPurchase(response) {
-	document.getElementById("Travel Offers").innerHTML = "Purchase " + response + "!";
+	
+	document.getElementById('TravelOffersPage').style.display = "none"
+	document.getElementById('TravelOffersMessage').style.display = "block"
 }
 
 function parseFeedback(response) {
-	document.getElementById("Provide Feedback").innerHTML = "Feedback submitted!";
+	
+	document.getElementById('FeedbackPage').style.display = "none"
+	document.getElementById('FeedbackMessage').style.display = "block"
 }
 
-function parseContract(response) {
-
-	document.getElementById("Create Travel Offers").innerHTML = "Travel Offer Created!";
-}
 
 
 function parseUserAccount(response) {
@@ -200,6 +207,10 @@ function parseUserAccount(response) {
 }
 
 function displaySmartContracts() {
+
+	document.getElementById('TravelOffersPage').style.display = "block"
+	document.getElementById('TravelOffersMessage').style.display = "none"
+
 	var url = localUrlStub + "/getAllContracts";
 	//window.alert(url);
 	blockchainRestApi(url, parseSmartContracts);
@@ -295,17 +306,8 @@ blockchainRestApi(url, parseUserAccount);
 
 
 displayUserTransactions();
+
 }
-
-$( document ).ready(function() {
-   document.getElementById("Travel Offers").addEventListener("click", displaySmartContracts);
-   document.getElementById("Account Details").addEventListener("click", displayUserAccount);
-
-
-   
-   //var tabcontent = document.getElementById("FeedbackTab");
-   //tabcontent.style.display = "none";
-});
 
 
 function changeUserAccount(){
@@ -318,7 +320,7 @@ function changeUserAccount(){
 	if (gitUrl.indexOf("PartC") != -1) {
 		
    
-		var contractTab = document.getElementById("SmartContractTab");
+		var contractTab = document.getElementById("CreateOfferListElement");
 		if (currentUserId == "T5940872") {
 			contractTab.style.display = "block";
 		}
@@ -332,6 +334,8 @@ function changeUserAccount(){
 
 
 function addSmartContract(){
+
+
 
 var e = document.getElementById("SmartContractCity");
 var contractId = e.options[e.selectedIndex].value;	
@@ -351,15 +355,50 @@ blockchainRestApi(url, parseContract);
 
 }
 
-$( document ).ready(function() {
+function parseContract(response) {
 
+document.getElementById('CreateOfferPage').style.display = "none";
+document.getElementById('CreateOfferMessage').style.display = "block";
+}
+
+function refreshTransferTab() {
+
+	document.getElementById('TransferPointsPage').style.display = "block";
+	document.getElementById('TransferPointsMessage').style.display = "none";
+
+}
+
+function refreshFeedbackTab() {
+
+	document.getElementById('FeedbackPage').style.display = "block";
+	document.getElementById('FeedbackMessage').style.display = "none";
+
+}
+
+
+function refreshCreateOfferTab2() {
+
+	document.getElementById('CreateOfferPage').style.display = "none";
+	document.getElementById('CreateOfferMessage').style.display = "block";
+
+}
+function refreshMyProblemTab() {
+
+	//document.getElementById('MyProblemPage').style.visibility = "hidden";
+	//document.getElementById('MyProblemMessage').style.visibility = "visible";
+	
+	document.getElementById('MyProblemPage').style.display = "block";
+	document.getElementById('MyProblemMessage').style.display = "none";
+
+}
+
+$( document ).ready(function() {
 
    document.getElementById("Travel Offers").addEventListener("click", displaySmartContracts);
    document.getElementById("Account Details").addEventListener("click", displayUserAccount);
-
+   document.getElementById("Transfer Points").addEventListener("click", refreshTransferTab);
+   document.getElementById("Provide Feedback").addEventListener("click", refreshFeedbackTab);
    
-   //var tabcontent = document.getElementById("FeedbackTab");
-   //tabcontent.style.display = "none";
 });
 
 </script>
@@ -392,10 +431,12 @@ $( document ).ready(function() {
   <li><a href="#" class="tablinks" onclick="openTab(event, 'Account Details')">Account Details</a></li>
   <li><a href="#" class="tablinks" onclick="openTab(event, 'Transfer Points')">Transfer Points</a></li>
   <li id="FeedbackTab"><a href="#" class="tablinks" onclick="openTab(event, 'Provide Feedback')">Provide Feedback</a></li>
-  <li id="SmartContractTab" style='display: none'  ><a href="#" class="tablinks" onclick="openTab(event, 'Create Travel Offers')">Create Travel Offers</a></li>
+  <li id="CreateOfferListElement" style="display: none"><a href="#" class="tablinks" onclick="openTab(event, 'Create Travel Offers')">Create Travel Offers</a></li>
   </ul>
 
 <div id="Travel Offers" class="tabcontent">
+   <span id='TravelOffersPage'> 
+   
   <h3>Travel Offers</h3>
   <hr>
 
@@ -416,6 +457,12 @@ $( document ).ready(function() {
 	</form>
 	<p></p>
 	<button onclick="purchaseTravelPackage()" class="purchase-btn">Purchase Travel Package</button>
+	
+	</span>
+	
+	<span id='TravelOffersMessage' style='display: none'> 
+	Purchase completed!
+	</span>
 </div>
 
 <div id="Account Details" class="tabcontent">
@@ -435,6 +482,8 @@ $( document ).ready(function() {
 </div>
 
 <div id="Transfer Points" class="tabcontent">
+
+  <span id='TransferPointsPage'> 
   <h3>Transfer Points</h3>
 
   <hr>
@@ -454,11 +503,21 @@ $( document ).ready(function() {
 		</form>
 		<p></p>
 
-		<button onclick="transferPoints()" class="transaction-btn">Transfer Points</button>
+		<button onclick="transferPoints()" class="purchase-btn">Transfer Points</button>
+		
+	</span>
+	
+	<span id='TransferPointsMessage'> 
+	Transfer completed!
+	</span>
+	
 </div>
 
 
 <div id="Provide Feedback" class="tabcontent">
+
+<span id='FeedbackPage'> 
+
   <h3>Rate Your Travel Experience</h3>
   <hr>
 
@@ -503,9 +562,17 @@ $( document ).ready(function() {
 
 		<br>
 	<button onclick="submitFeedback()" class="purchase-btn">Submit User Feedback</button>
+	
+	</span> 
+	
+	<span id='FeedbackMessage'> 
+	Feedback submitted!
+	</span>
 </div>
 
 <div id="Create Travel Offers" class="tabcontent">
+
+<span id="CreateOfferPage">
   <h3>Create Travel Offer</h3>
 
   <hr>
@@ -532,7 +599,14 @@ $( document ).ready(function() {
 		</form>
 		<p></p>
 
-		<button onclick="addSmartContract()" class="transaction-btn">Create Offer</button>
+		<button onclick="addSmartContract()" class="purchase-btn">Create Offer</button>
+		
+</span>
+
+<span id="CreateOfferMessage">
+Contract Submitted!
+</span>
+
 </div>
 
 
