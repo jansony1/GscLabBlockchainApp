@@ -1,4 +1,4 @@
-# IBM Blockchain - Open Points Loyalty Application
+# IBM Blockchain - Open Points Application
 
 Welcome! These instructions describe the prerequisites you should complete before attending the lab session. Please follow these steps to ensure that you are fully 
 prepared to participate on the day of the lab.
@@ -92,24 +92,23 @@ and click 'DEPLOY'.</b>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/deploy1.PNG)
 
 
-* The status of the deployment is shown. This can take approximately 2 minutes to complete.
+* The status of the deployment is shown. This can take approximately 3-5 minutes to complete.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/createproject.PNG)
 
 * The deployment process performs the following actions:
-  - Creates the application 'OpenPointsBlockchainApp'.
-  - Creates the service 'OpenPointsBlockchainService'.
+  - Creates a Node JS application
+  - Creates a blockchain service
 
-Once the deployment is complete, your dashboard should contain the app and the service as shown below. 
+<b>5. After the deployment has completed, click on the 'Deployed to Bluemix sucessfully' link. </b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/res.PNG)
 
+You will land on the Overview page of your application. 
 
-<b>5. After the deployment process has finsihed, select 'VIEW YOUR APP'.</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/yourapp.PNG)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/viewyourapp.PNG)
-
-<b>6. The application and service have been successfully deployed, and you are now ready to begin the lab!</b>
+<b>6. The application and services have been successfully deployed, and you are now ready to begin the lab!</b>
 
 
 # License
