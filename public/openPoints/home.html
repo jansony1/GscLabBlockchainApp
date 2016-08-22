@@ -269,7 +269,7 @@ transferString += "&contract=" + contract + "&description=" + description;
 
 var url = localUrlStub + "/transferpoints?" + transferString + "&activities=2&type=Transfer&money=0"
 
-//window.alert(url);
+window.alert(url);
 blockchainRestApi(url, parseTravelPurchase);
 
 }
@@ -336,7 +336,7 @@ function changeUserAccount(){
 function addSmartContract(){
 
 
-
+//window.alert("adding smart contract");
 var e = document.getElementById("SmartContractCity");
 var contractId = e.options[e.selectedIndex].value;	
 var title = document.getElementById("contractTitle").value ;
@@ -349,7 +349,7 @@ discountRate = discountRate / 100.0;
 var contractTerms = "contractid=" + contractId + "&title=" + title + "&condition1=" + term1+ "&condition2=" + term2 + "&discountrate=" + discountRate;
 
 var url = localUrlStub + "/addSmartContract?" + contractTerms;
-
+//window.alert(url);
 blockchainRestApi(url, parseContract);
 
 
@@ -451,8 +451,8 @@ $( document ).ready(function() {
 		<input type="radio" name="city" value="Paris:10000" checked> Paris: 10k Points <br>
 		<input type="radio" name="city" value="New York City:15000" > New York City: 15k Points<br>
 		<input type="radio" name="city" value="London:20000"> London: 20k Points <br>
-		<input type="radio" name="city" value="Tokyo:30000"> Tokyo: 25k Points <br>
-		<input type="radio" name="city" value="Rio de Janeiro:40000"> Rio de Janeiro: 30k Points <br>
+		<input type="radio" name="city" value="Tokyo:25000"> Tokyo: 25k Points <br>
+		<input type="radio" name="city" value="Rio de Janeiro:30000"> Rio de Janeiro: 30k Points <br>
 		
 	</form>
 	<p></p>
