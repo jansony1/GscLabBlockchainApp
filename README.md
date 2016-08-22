@@ -125,7 +125,7 @@ service can be successfully created.
 
 
 
-<b>6. The application and services have been successfully deployed, and you are now ready to begin the lab!</b>
+<b>7. The application and services have been successfully deployed, and you are now ready to begin the lab!</b>
 
 
 # License
