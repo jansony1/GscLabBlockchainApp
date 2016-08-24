@@ -37,14 +37,14 @@ var users 		= null;
 var chaincode 	= null;
 
 // Set chaincode source repository for Part B
-var chaincode_zip_url 	= "https://github.com/apiBlockchain/GscLabChaincode/archive/master.zip";
-var chaincode_unzip_dir = "GscLabChaincode-master";
-var chaincode_git_url 	= "https://github.com/apiBlockchain/GscLabChaincode";
+//var chaincode_zip_url 	= "https://github.com/apiBlockchain/GscLabChaincode/archive/master.zip";
+//var chaincode_unzip_dir   = "GscLabChaincode-master";
+//var chaincode_git_url 	= "https://github.com/apiBlockchain/GscLabChaincode";
 
 // Set chaincode source repository for Part C
-//var chaincode_zip_url 		= "https://github.com/apiBlockchain/GscLabChaincodePartC/archive/master.zip";
-//var chaincode_unzip_dir 	= "GscLabChaincodePartC-master";
-//var chaincode_git_url 		= "https://github.com/apiBlockchain/GscLabChaincodePartC";
+var chaincode_zip_url 		= "https://github.com/apiBlockchain/GscLabChaincodePartC/archive/master.zip";
+var chaincode_unzip_dir 	= "GscLabChaincodePartC-master";
+var chaincode_git_url 		= "https://github.com/apiBlockchain/GscLabChaincodePartC";
 
 ////// Pathing and Module Setup ////////
 app.set('views', path.join(__dirname, 'views'));
@@ -135,7 +135,6 @@ app.get('/', function(req, res) {
 
 			// Pass the hostname and chaincode source to the html file
 			data = data.replace('#HOSTNAME#', hostnameForHtml);
-			data = data.replace('#GITURL#', chaincode_git_url);
 
 			console.log('parsed html file succeeded');
 			res.send(data);
@@ -256,8 +255,7 @@ app.get('/addSmartContract', function(req, res) {
 	console.log('discountRate: ', discountRate);
 	
 	chaincode.invoke.addSmartContract([ contractId, title, condition1,
-			condition2, discountRate ], cb_invoked_api); // create a new
-															// paper
+			condition2, discountRate ], cb_invoked_api);
 
 	res.send("success");
 
@@ -288,6 +286,17 @@ app.get('/getUserTransactions', function(req, res) {
 	chaincode.query.getTxs([ 'getTxs', userid ], function(e, data) {
 		cb_received_response(e, data, res);
 	});
+
+});
+
+
+// Reset all of the data in the blockchain back to the original state 
+app.get('/datareset', function(req, res) {
+
+	
+	chaincode.invoke.init(['99'], cb_invoked_api);
+
+	res.send("Data reset function executed");
 
 });
 
@@ -359,7 +368,9 @@ var ibc 	= new Ibc1();
 // Load blockchain service peers manually, or from the Bluemix VCAP variable.
 // Note: Bluemix peers will overwrite local peers!
 try {
-	var manual 	= JSON.parse(fs.readFileSync('mycreds_Blockchain.json','utf8'));
+	//var manual 	= JSON.parse(fs.readFileSync('mycreds_BlockchainAug22.json','utf8'));
+	var manual 	= JSON.parse(fs.readFileSync('my_credsgsclabtest3.json','utf8'));
+	
 	peers 		= manual.credentials.peers;
 	users 		= null; // users are only found if security is on
 	
@@ -420,13 +431,13 @@ if (peers != null) {
 			zip_url :   chaincode_zip_url,
 			unzip_dir : chaincode_unzip_dir,
 			git_url :   chaincode_git_url,
-			deployed_name: ''
+			//deployed_name: '9ea9cd74f6f7161878e4a318c648b3c6df6e32a6ffde5b079ff9587ed255d5480e846a2f9c516a6a135255bd6229dcc6cb0508f904a2d4fc2040ece77d7b8863'
 		}
 	};
 
 	if (process.env.VCAP_SERVICES) {
 		console.log('\n[!] looks like you are in bluemix, I am going to clear out the deploy_name so that it deploys new cc.\n[!] hope that is ok budddy\n');
-		options.chaincode.deployed_name = '';
+		//options.chaincode.deployed_name = '';
 	}
 
 	// Fire off SDK
