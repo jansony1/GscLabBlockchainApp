@@ -369,8 +369,8 @@ var ibc 	= new Ibc1();
 // Note: Bluemix peers will overwrite local peers!
 try {
 	//var manual 	= JSON.parse(fs.readFileSync('mycreds_BlockchainAug22.json','utf8'));
+	//var manual 	= JSON.parse(fs.readFileSync('my_credsgsclabtest3.json','utf8'));
 	var manual 	= JSON.parse(fs.readFileSync('my_credsgsclabtest3.json','utf8'));
-	
 	peers 		= manual.credentials.peers;
 	users 		= null; // users are only found if security is on
 	
@@ -431,14 +431,13 @@ if (peers != null) {
 			zip_url :   chaincode_zip_url,
 			unzip_dir : chaincode_unzip_dir,
 			git_url :   chaincode_git_url,
-			//deployed_name: '9ea9cd74f6f7161878e4a318c648b3c6df6e32a6ffde5b079ff9587ed255d5480e846a2f9c516a6a135255bd6229dcc6cb0508f904a2d4fc2040ece77d7b8863'
 		}
 	};
 
-	if (process.env.VCAP_SERVICES) {
-		console.log('\n[!] looks like you are in bluemix, I am going to clear out the deploy_name so that it deploys new cc.\n[!] hope that is ok budddy\n');
+	//if (process.env.VCAP_SERVICES) {
+		//console.log('\n[!] looks like you are in bluemix, I am going to clear out the deploy_name so that it deploys new cc.\n[!] hope that is ok budddy\n');
 		//options.chaincode.deployed_name = '';
-	}
+	//}
 
 	// Fire off SDK
 	ibc.load(options, function(err, cc) {
