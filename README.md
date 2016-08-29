@@ -134,15 +134,23 @@ You will land on the Overview page of the blockchain service, which should appea
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/correctBlockchainLaunch.png)
 
+<b>7. The application and services have been successfully deployed, and you are now ready to begin the lab!</b>
+
+# Troubleshooting
+
 If you receive the error message shown below that the network is over capacity, then the service was not created. 
-Please delete the blockchain service and the lab application, and repeat the deployment steps listed here until a blockchain
+Please delete the blockchain service and the lab application, and repeat the deployment steps listed above until a blockchain
 service can be successfully created. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/overcapacity.png)
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/app_delete.PNG)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/app_delete1.PNG)
 
 
-<b>7. The application and services have been successfully deployed, and you are now ready to begin the lab!</b>
+
+
 
 
 # License
