@@ -6,9 +6,9 @@ prepared to participate on the day of the lab.
 
 ## Prepare your Bluemix account
 
-<b>1. Ensure that you have an account on [IBM Bluemix](https://console.ng.bluemix.net). (If you already have an account, you can proceed to step 2 in this section). </b>
+<b>1. Ensure that you have an account on [IBM Bluemix](https://bluemix.net). (If you already have an account, you can proceed to step 2 in this section). </b>
 
-  1.1 Register for a [Bluemix account](https://console.ng.bluemix.net/registration/), fill out the required details and click 'Create Account'.
+  1.1 Register for a [Bluemix account](https://bluemix.net/registration/), fill out the required details and click 'Create Account'.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/register.PNG)
 
