@@ -48,14 +48,31 @@ prepared to participate on the day of the lab.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/summary_success.PNG)
  
-
- You will land on your Bluemix Dashboard.
+<b>
+ You will land on your Bluemix Dashboard. 
+ * If you have landed on the Dashboard view as shown below, proceed to [step 2](#acc_complete1).
+ * If you did not get to the Dashboard, proceed to [step 1.8](#step_view). 
+</b>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/dashboard.PNG)
 
 
+<a name="step_view">
+   1.8 If you land on the new Bluemix interface as shown below,</a> click on the highlighted area at the top right.
 
-<b> 2. Ensure that you have the necessary space available in your Bluemix account to complete the lab. During the lab, you will be required to deploy 1 application and 2 services.  Go to your Bluemix Dashboard to check if you have the required space: </b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/newview1.PNG)   
+
+ Click on 'Switch to Classic'.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![](readme_images/newview2.PNG)  
+
+You may be asked to login again. After login, you will land on the <b>Bluemix Dashboard</b>.
+
+
+
+<a name="acc_complete">
+<a name="acc_complete1">
+<b> 2. Ensure that you have the necessary space available in your Bluemix account to complete the lab. During the lab, you will be required to deploy 1 application and 2 services.  Go to your Bluemix Dashboard to check if you have the required space: </b></a></a>
   
    * The 'Services & APIs' tile shows the number of services you have available. You will require space to deploy two services during the lab. 
 
