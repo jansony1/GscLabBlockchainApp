@@ -38,9 +38,9 @@ var chaincode 	= null;
 
 
 // Set chaincode source repository
-var chaincode_zip_url 		= "https://github.com/apiBlockchain/GscLabChaincodePartC/archive/master.zip";
-var chaincode_unzip_dir 	= "GscLabChaincodePartC-master";
-var chaincode_git_url 		= "https://github.com/apiBlockchain/GscLabChaincodePartC";
+var chaincode_zip_url 		= "https://github.com/apiBlockchain/GscLabChaincode/archive/master.zip";
+var chaincode_unzip_dir 	= "GscLabChaincode-master";
+var chaincode_git_url 		= "https://github.com/apiBlockchain/GscLabChaincode";
 
 ////// Pathing and Module Setup ////////
 app.set('views', path.join(__dirname, 'views'));
