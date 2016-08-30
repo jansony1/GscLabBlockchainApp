@@ -36,12 +36,8 @@ var peers 		= null;
 var users 		= null;
 var chaincode 	= null;
 
-// Set chaincode source repository for Part B
-//var chaincode_zip_url 	= "https://github.com/apiBlockchain/GscLabChaincode/archive/master.zip";
-//var chaincode_unzip_dir   = "GscLabChaincode-master";
-//var chaincode_git_url 	= "https://github.com/apiBlockchain/GscLabChaincode";
 
-// Set chaincode source repository for Part C
+// Set chaincode source repository
 var chaincode_zip_url 		= "https://github.com/apiBlockchain/GscLabChaincodePartC/archive/master.zip";
 var chaincode_unzip_dir 	= "GscLabChaincodePartC-master";
 var chaincode_git_url 		= "https://github.com/apiBlockchain/GscLabChaincodePartC";
@@ -162,59 +158,6 @@ app.get('/getAllContracts', function(req, res) {
 
 });
 
-
-
-// Deploy the chaincode for part C of the lab using a url
-//NOTE:  This functionality is not used during the lab
-app.get('/deployPartC',function(req, res) {
-	
-	var ibc2 = new Ibc1();
-	var options = {
-			network : {
-				peers : [ peers[0] ], 
-				users : users, 
-				options : {
-					quiet : true,
-					tls : true, 
-					maxRetry : 1
-				}
-			},
-			
-			chaincode : {
-
-				zip_url : 'https://github.com/apiBlockchain/GscLabChaincodePartC/archive/master.zip',
-				unzip_dir : 'GscLabChaincodePartC-master', 
-				git_url : 'https://github.com/apiBlockchain/GscLabChaincodePartC',
-			}
-	};
-
-	// ---- Fire off SDK ---- //
-	ibc2.load(options,function(err, cc) { 
-
-		if (err != null) {
-			console.log('! looks like an error loading the chaincode or network, app will fail\n',err);
-			if (!process.error)
-				process.error = {
-					type : 'load',
-					msg : err.details
-			}; 
-		} else {
-			chaincode = cc; 
-
-
-			if (!cc.details.deployed_name || cc.details.deployed_name === '') { 
-				cc.deploy('init',[ '99' ], {save_path : './cc_summaries', delay_ms : 50000}, function(e) {
-					check_if_deployed(e,1);
-					res.send("Code deployed successfully!");
-					});
-			} else { 
-				console.log('chaincode summary file indicates chaincode has been previously deployed');
-				check_if_deployed(null, 1);
-			}
-		}
-	});
-
-});
 
 // Transfer points in between members of the open points network
 app.get('/transferPoints', function(req, res) {
