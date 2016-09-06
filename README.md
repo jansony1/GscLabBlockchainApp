@@ -136,6 +136,8 @@ You will land on the Overview page of the blockchain service, which should appea
 
 <b>7. The application and services have been successfully deployed, and you are now ready to begin the lab!</b>
 
+Download the [lab handout](https://ibm.biz/Bdru73) to begin the lab. 
+
 # Troubleshooting
 
 If you receive the error message shown below that the network is over capacity, then the service was not created. 
@@ -149,7 +151,6 @@ service can be successfully created.
 
 <b>Deleting the application.</b>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/app_del1.PNG)
-
 
 
 
