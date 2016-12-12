@@ -81,7 +81,11 @@ You may be asked to login again. After login, you will land on the <b>Bluemix Da
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/services2.PNG)
 
-   * The 'Cloud Foundry Apps' tile shows the memory you have available for apps. You will require at least 512 MB of free space to deploy an app during the lab. If you do not have 256MB of free space, then delete some existing apps (visible in your dashboard) before proceeding to the next step.
+   * The 'Cloud Foundry Apps' tile shows the memory you have available for apps. You will require at least 512 MB of free space to 
+   
+   
+   
+  an app during the lab. If you do not have 256MB of free space, then delete some existing apps (visible in your dashboard) before proceeding to the next step.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](readme_images/services1.PNG)
 
@@ -89,9 +93,7 @@ You may be asked to login again. After login, you will land on the <b>Bluemix Da
 
 <b>1. Click on the 'Deploy to Bluemix' button below.</b>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/jansony1/GscLabBlockchainApp.git&branch=patch-1)
-
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/jansony1/GscLabBlockchainApp.git)
 
 <b>2. Log in with your Bluemix account.</b>
 
