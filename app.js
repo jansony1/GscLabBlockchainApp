@@ -314,11 +314,11 @@ try {
 	//var manual 	= JSON.parse(fs.readFileSync('mycreds_BlockchainAug22.json','utf8'));
 	//var manual 	= JSON.parse(fs.readFileSync('my_credsgsclabtest3.json','utf8'));
 	var manual 	= JSON.parse(fs.readFileSync('my_credsgsclabtest3.json','utf8'));
-	peers 		= manual.credentials.peers;
+	peers 		= manual.peers;
 	users 		= null; // users are only found if security is on
 	
-	if (manual.credentials.users)
-		users 	= manual.credentials.users;
+	if (manual.users)
+		users 	= manual.users;
 	
 	console.log('loading hardcoded users');
 } catch (e) {
